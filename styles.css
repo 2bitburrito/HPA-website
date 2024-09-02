@@ -1,0 +1,257 @@
+/* General Styles */
+body {
+    font-family: "SUSE", sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #e6e5be;
+    background-color: #151b29;
+    font-size: 30px;
+}
+
+/* Header */
+header {
+    background-color: #afae7a;
+    color: #fff;
+    padding: 10px 0;
+    background-color:#151b29;
+    text-transform: capitalize;
+    font-family: "SUSE", sans-serif;
+    font-size: 23px;
+
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    margin: 0 auto;
+    padding: 0 2px;
+}
+nav a {
+
+    color:#ffa260;
+    padding: 1em 2em;
+    font-size: 1em;
+    text-decoration: none;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color:beige;
+    display: inline-block;
+    text-align: center;
+    justify-content:left;
+    align-items:stretch
+    
+}
+
+@keyframes continuous-rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}    
+@keyframes slide-in{
+    from {
+        transform: translateX(-1000px);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+@keyframes slide-out{
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateX(-1000px);
+    }
+}
+.quote{
+    font-size: .8em;
+    font-style: italic;
+    font-weight: 200;
+    color: #e6e5be;
+    text-align: center;
+    transform: translateX(-1000px);
+    padding: 1.5em;
+    display: inline-block;
+
+}
+.spin {
+    display: inline-block;
+}
+.logo:hover .spin {
+    transform: rotate(360deg);
+    animation: continuous-rotation .6s linear infinite;
+}
+.logo:hover .quote {
+    animation: slide-in 1s .4s ease forwards;
+}
+.logo:not(:hover) .quote {
+    animation: slide-out 1s ease forwards;
+}
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style-type: none;
+    border-width: 1em;
+}
+
+header li :hover {
+    background-color: #ffa260;
+    color: #151b29;
+    transition: background-color 200ms, color 200ms;
+}
+
+
+
+/* Hero Section */
+h2 {
+    font-size: 1.5em;
+    margin: .2em;
+    text-transform: uppercase;
+    text-align: center;
+}
+.hero {
+    background: url(Images/yomex-owo-zRDoTgjDvCc-unsplash.jpg) no-repeat center center/cover;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+    
+}
+
+h1 {
+    font-size: 2.2em;
+    margin: 0;
+    text-transform: uppercase;
+    transform: translateY(-1.4em);
+}
+
+.hero-content .btn {
+    background-color:  #151b29;
+    border: 2px solid;
+    color: #ffa260;
+    border: 2px solid;
+    transition: border-color 200ms, color 200ms, transform 500ms, box-shadow 200ms;
+    padding: 1em 2em;
+    font-size: 1em;
+    text-decoration: none;
+    border-radius: 1rem;
+    display: inline;
+}
+
+.hero-content .btn:hover{
+    border-color: #f1ff5c;
+
+    color: white;
+    box-shadow: 0 0.5em 0.5em -0.4em #f1ff5c;
+    transform: translateY(-0.5em);
+    cursor: pointer;
+}
+
+/* About Me Section */
+.aboutme {
+    max-width: 1400px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+.aboutme-content {
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+#Hugh-img {
+    width: 50%;
+    border-radius: 8%;
+    margin: 0 auto;
+    display: block;
+}
+/* Gear List */
+#table-box{
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+#gear-list table {
+    width: 50%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+    font-size: .8em;
+
+}
+
+#gear-list tr:nth-child(even) {
+    background-color: rgba(114, 175, 182, 0.296);
+}
+
+#gear-list tr:hover {
+    background-color: #dddddd49;
+}
+
+#Gear-list-header:hover {
+    background-color: #151b29;
+}
+/* Footer */
+footer {
+    background-color: #1c222f;
+    color: #000000;
+    padding: 20px 0;
+    text-align: center;
+}
+
+footer .socials {
+    margin-bottom: 10px;
+}
+
+footer .socials a {
+    color: #fff;
+    margin: 0 10px;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+footer p {
+    margin: 0;
+    font-size: .5em;
+}
+
+
+@media(max-width: 1000px) {
+
+    nav ul {
+        flex-direction: column;
+        gap: 0;
+    }
+    ul{
+        padding: 1em 1em;
+    }
+    h1{
+        font-size: 1.6em;
+    }
+    .aboutme-content {
+        font-size: .6em;
+    }
+}
+@media(max-width: 800px) {
+    h1{
+        font-size: 1.2em;
+    }
+    nav ul.active {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+    .aboutme-content {
+        flex-direction: column;
+    }
+}
