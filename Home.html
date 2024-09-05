@@ -8,18 +8,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap" rel="stylesheet">
+    
 </head>
 <body>
     <!-- Header Section -->
     <header>
         <nav>
             <div class="logo">
-                <a href="Home.html">Hugh Palmer<span class="spin">       \ </span>Audio<span class="quote">"Sounds Rolling"</span></a> 
+                <a href="Home.html">Hugh Palmer<span class="spin"> \ </span>Audio<span class="quote">"Sounds Rolling"</span></a> 
             </div>
             
             <ul>
                 <li>
-                    <a href="#">Home</a>
+                    <a href="Home.thml">Home</a>
                 </li>
                 <li>
                     <a href="#">About</a>
@@ -60,49 +61,79 @@
 <!-- Gear list -->
     <section id="gear-list">
         <h2>Gear List</h2>
-        <div id="table-box">
-            <table>
-                <thead>
-                    <tr id="Gear-list-header">
-                        <th>Gear</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Sound Devices 888</td>
-                        <td>16 Track Recorder</td>
-                    </tr>
-                    <tr>
-                        <td>Sound Devices CL-16</td>
-                        <td>16 linear Control Surface</td>
-                        </tr>
-                    <tr>
-                        <td>Sound Devices Wireless</td>
-                        <td>8 channels of digital wireless</td>
-                    </tr>
-                    <tr>
-                        <td>Microphones</td>
-                        <td>
-                            2x 4017b Shotguns <br>
-                            2x 2017 Shotguns <br>
-                            1x 4018c Supercardioid <br>
-                        </td>
-                    </tr>
-                        <td>Sennheiser Wireless Monitoring System</td>
-                        <td>10x IEMs and 1x Mono Hops</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <section class="gear-list">
+            <section class="gear-row" id="gear-888">
+                <div class="icon-box" id="icon-888">
+                    <img src="icons/mixing-table.png" alt="">
+                </div>
+                <div class="gear-content">
+                    <div>
+                        <h3>Sound Devices 888</h3>
+                    </div>
+                    <div>
+                        <p>16 Input Mixer/Recorder</p>
+                    </div>
+                </div>
+                <div class="gear-image">
+                    <img src="Images/888stack.png" alt="">
+                </div>
+            </section> 
+            <section class="gear-row" id="gear-astral">
+                <div class="icon-box" id="icon-nexus">
+                    <img src="icons/wireless.png" alt="">
+                </div>
+                <div class="gear-content">
+                    <div>
+                        <h3>Sound Devices Astral Wireless</h3>
+                    </div>
+                    <div>
+                        <p>10 channels of pure digital wireless with full 32bit recording capabilities</p>
+                    </div>
+                </div>
+                <div class="gear-image">
+                    <img src="Images/A20Nexus-front.png" alt="">
+                </div>
+            </section>
+            <section class="gear-row" id="gear-microphones">
+                <div class="icon-box" id="icon-mics">
+                    <img src="icons/mic.png" alt="">
+                </div>
+                <div class="gear-content">
+                    <div>
+                        <h3>Microphones</h3>
+                    </div>
+                    <div>
+                        <p>Modular 4017 & 4018 DPA Shotguns and a range of DPA Lavalier Microphones</p>
+                    </div>
+                </div>
+                <div class="gear-image">
+                    <img src="Images/2017-shotgun-microphone-1170x660-Photoroom.png" alt="">
+                </div>
+            </section>
+            <section class="gear-row" id="gear-iems">
+                <div class="icon-box" id="icon-iem">
+                    <img src="icons/wireless-headphones.png" alt="">
+                </div>
+                <div class="gear-content">
+                    <div>
+                        <h3>Sennheiser IEM System</h3>
+                    </div>
+                    <div>
+                        <p>10 channels of pure digital wireless with full 32bit recording capabilities</p>
+                    </div>
+                </div>
+                <div class="gear-image">
+                    <img src="Images/sennheiser-iem.png" alt="">
+                </div>
+            </section>
+        </section>
     </section>
 
     <!-- Footer Section -->
     <footer>
         <div class="socials">
-            <a href="#">Instagram</a>
-            <a href="#">Twitter</a>
-            <a href="#">LinkedIn</a>
+            <a href="https://www.instagram.com/hughpalmerproduction/">Instagram</a>
+            <a href="https://www.linkedin.com/in/hugh-palmer-0a8139a5/">LinkedIn</a>
         </div>
         <p>&copy; 2024 Hugh Palmer Audio - Melbourne Sound Recordist. All rights reserved.</p>
     </footer>
