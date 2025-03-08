@@ -1,142 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hugh Palmer Audio</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap" rel="stylesheet">
-    
-</head>
-<body>
-    <!-- Header Section -->
-    <header>
-        <nav>
-            <div class="logo">
-                <a href="Home.html">Hugh Palmer<span class="spin"> \ </span>Audio<span class="quote">"Sounds Rolling"</span></a> 
-            </div>
-            
-            <ul>
-                <li>
-                    <a href="Home.thml">Home</a>
-                </li>
-                <li>
-                    <a href="#">About</a>
-                </li>
-                <li>
-                    <a href="#">Portfolio</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="Contact.html">Contact</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+  </head>
+  <body>
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content">
-            <h1>sound recordist & ENGINEER Based in Melbourne Australia</h1>
-            <a href="#portfolio" class="btn">Get in Touch</a>
+      <nav id="mainNavbar">
+        <div class="logo" id="logo">
+          <a href="Home.html"
+            >Hugh Palmer<span class="spin"> \ </span>Audio<span class="quote"
+              >"Sounds Rolling"</span
+            ></a
+          >
         </div>
+
+        <ul>
+          <li>
+            <a href="Home.html">Home</a>
+          </li>
+          <li>
+            <a href="#aboutme">About</a>
+          </li>
+          <li>
+            <a href="#gear-list">Gear list</a>
+          </li>
+          <li>
+            <a href="#contact-form">Contact</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="hero-content">
+        <h1 id="title">
+          sound recordist & ENGINEER <br />Based in Melbourne Australia
+        </h1>
+        <a href="#contact-form" class="btn">Get in Touch</a>
+      </div>
     </section>
 
     <!-- About Me Section -->
     <section id="aboutme" class="aboutme">
-        <h2>About Me</h2>
-        <div class="aboutme-content">
-            <img src="Images/REM_0394 BTS Chefchaouen 2.jpeg" alt="Hugh Palmer" id="Hugh-img">
-            <p>SOUND RECORDIST Based in Melbourne, Australia
-                I am a Melbourne Sound Recordist who is passionate about recording sound for any medium. I have a tireless work ethic and strive to ensure that every project sounds the very best that it can while also bringing a friendly and calm demeanor and an easy going attitude. 
-                <br>
-                <br>
-                I offer a wide range of services from location sound recording, sound post for film TV and commercials, audio restoration and on-location music recording. I understand well the tools that audio post use and so I am well equipped to give good technical advice and direction in regards to how we record on set sounds. With a versatile and top of the line audio kit of the most robust and best sounding equipment available I am ready for any production from large to small.</p>
-        </div>
+      <h2>About Me</h2>
+      <div class="aboutme-content">
+        <img
+          src="Images/REM_0394 BTS Chefchaouen 2.jpeg"
+          alt="Hugh Palmer"
+          id="Hugh-img"
+        />
+        <p id="about-me-p">
+          SOUND RECORDIST Based in Melbourne, Australia I am a Melbourne Sound
+          Recordist who is passionate about recording sound for any medium. I
+          have a tireless work ethic and strive to ensure that every project
+          sounds the very best that it can while also bringing a friendly and
+          calm demeanor and an easy going attitude.
+          <br />
+          <br />
+          I offer a wide range of services from location sound recording, sound
+          post for film TV and commercials, audio restoration and on-location
+          music recording. I understand well the tools that audio post use and
+          so I am well equipped to give good technical advice and direction in
+          regards to how we record on set sounds. With a versatile and top of
+          the line audio kit of the most robust and best sounding equipment
+          available I am ready for any production from large to small.
+        </p>
+      </div>
     </section>
-<!-- Gear list -->
+    <!-- Gear list -->
     <section id="gear-list">
-        <h2>Gear List</h2>
-        <section class="gear-list">
-            <section class="gear-row" id="gear-888">
-                <div class="icon-box" id="icon-888">
-                    <img src="icons/mixing-table.png" alt="">
-                </div>
-                <div class="gear-content">
-                    <div>
-                        <h3>Sound Devices 888</h3>
-                    </div>
-                    <div>
-                        <p>16 Input Mixer/Recorder</p>
-                    </div>
-                </div>
-                <div class="gear-image">
-                    <img src="Images/888stack.png" alt="">
-                </div>
-            </section> 
-            <section class="gear-row" id="gear-astral">
-                <div class="icon-box" id="icon-nexus">
-                    <img src="icons/wireless.png" alt="">
-                </div>
-                <div class="gear-content">
-                    <div>
-                        <h3>Sound Devices Astral Wireless</h3>
-                    </div>
-                    <div>
-                        <p>10 channels of pure digital wireless with full 32bit recording capabilities</p>
-                    </div>
-                </div>
-                <div class="gear-image">
-                    <img src="Images/A20Nexus-front.png" alt="">
-                </div>
-            </section>
-            <section class="gear-row" id="gear-microphones">
-                <div class="icon-box" id="icon-mics">
-                    <img src="icons/mic.png" alt="">
-                </div>
-                <div class="gear-content">
-                    <div>
-                        <h3>Microphones</h3>
-                    </div>
-                    <div>
-                        <p>Modular 4017 & 4018 DPA Shotguns and a range of DPA Lavalier Microphones</p>
-                    </div>
-                </div>
-                <div class="gear-image">
-                    <img src="Images/2017-shotgun-microphone-1170x660-Photoroom.png" alt="">
-                </div>
-            </section>
-            <section class="gear-row" id="gear-iems">
-                <div class="icon-box" id="icon-iem">
-                    <img src="icons/wireless-headphones.png" alt="">
-                </div>
-                <div class="gear-content">
-                    <div>
-                        <h3>Sennheiser IEM System</h3>
-                    </div>
-                    <div>
-                        <p>10 channels of pure digital wireless with full 32bit recording capabilities</p>
-                    </div>
-                </div>
-                <div class="gear-image">
-                    <img src="Images/sennheiser-iem.png" alt="">
-                </div>
-            </section>
+      <h2>Gear List</h2>
+      <section class="gear-list">
+        <section class="gear-row" id="gear-888">
+          <div class="icon-box" id="icon-888">
+            <img src="icons/mixing-table.png" alt="" />
+          </div>
+          <div class="gear-content">
+            <div>
+              <h3>Sound Devices 888</h3>
+            </div>
+            <div>
+              <p>16 Input Mixer/Recorder</p>
+            </div>
+          </div>
+          <div class="gear-image">
+            <img src="Images/888stack.png" alt="" />
+          </div>
         </section>
+        <section class="gear-row" id="gear-astral">
+          <div class="icon-box" id="icon-nexus">
+            <img src="icons/wireless.png" alt="" />
+          </div>
+          <div class="gear-content">
+            <div>
+              <h3>Sound Devices Astral Wireless</h3>
+            </div>
+            <div>
+              <p>
+                10 channels of pure digital wireless with full 32bit recording
+                capabilities
+              </p>
+            </div>
+          </div>
+          <div class="gear-image">
+            <img src="Images/A20Nexus-front.png" alt="" />
+          </div>
+        </section>
+        <section class="gear-row" id="gear-microphones">
+          <div class="icon-box" id="icon-mics">
+            <img src="icons/mic.png" alt="" />
+          </div>
+          <div class="gear-content">
+            <div>
+              <h3>Microphones</h3>
+            </div>
+            <div>
+              <p>
+                Modular 4017 & 4018 DPA Shotguns and a range of DPA Lavalier
+                Microphones
+              </p>
+            </div>
+          </div>
+          <div class="gear-image">
+            <img
+              src="Images/2017-shotgun-microphone-1170x660-Photoroom.png"
+              alt=""
+            />
+          </div>
+        </section>
+        <section class="gear-row" id="gear-iems">
+          <div class="icon-box" id="icon-iem">
+            <img src="icons/wireless-headphones.png" alt="" />
+          </div>
+          <div class="gear-content">
+            <div>
+              <h3>Sennheiser IEM System</h3>
+            </div>
+            <div>
+              <p>
+                10 channels of pure digital wireless with full 32bit recording
+                capabilities
+              </p>
+            </div>
+          </div>
+          <div class="gear-image">
+            <img src="Images/sennheiser-iem.png" alt="" />
+          </div>
+        </section>
+      </section>
+    </section>
+    <!-- Contact Form -->
+    <section>
+      <div class="contact-form">
+        <form action="/submitform">
+            <p>
+                <p>
+                    <label for="First Name Input">First Name:</label>
+                    <input type="text" id="First Name Input" placeholder="First Name" name="First_Name" required>
+                    <label for="First Name Input">Last Name:</label>
+                    <input type="text" id="Last Name Input" placeholder="Last name" name="Last_Name">
+                    <label for="Email Address Input">Email:</label>
+                    <input type="email" id="Email Address Input" placeholder="Email" name="User_Email" required> 
+                </p>
+                <p>
+                    
+                    <label for="Message Input">Message:</label> <br>
+                    <textarea id="Message Input" name="User_Message" placeholder="Input your message here" rows="5" cols="80" required></textarea>
+                </p>
+                <p>
+                    <label for="captcha">I'm not a robot</label>
+                    <input type="checkbox" name="I'm not a robot" id="captcha" required> <br>
+                    
+                    <button>Submit</button>
+                </p>
+            </p>
+        </form>
+      </div>
     </section>
 
     <!-- Footer Section -->
     <footer>
-        <div class="socials">
-            <a href="https://www.instagram.com/hughpalmerproduction/">Instagram</a>
-            <a href="https://www.linkedin.com/in/hugh-palmer-0a8139a5/">LinkedIn</a>
-        </div>
-        <p>&copy; 2024 Hugh Palmer Audio - Melbourne Sound Recordist. All rights reserved.</p>
+      <div class="socials">
+        <a href="https://www.instagram.com/hughpalmerproduction/">Instagram</a>
+        <a href="https://www.linkedin.com/in/hugh-palmer-0a8139a5/">LinkedIn</a>
+      </div>
+      <p>
+        &copy; 2024 Hugh Palmer Audio - Melbourne Sound Recordist. All rights
+        reserved.
+      </p>
     </footer>
-</body>
+    <script>
+      $(function () {
+        $(document).scroll(function () {
+          var $nav = $("#mainNavbar");
+          $nav.toggleClass("scrolled", $(this).scrollTop() > $nav.height());
+        });
+      });
+    </script>
+  </body>
 </html>
-
