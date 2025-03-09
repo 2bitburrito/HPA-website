@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap" rel="stylesheet" />
-    <script src="index.js"></script>
 </head>
 
 <body>
@@ -153,26 +152,22 @@
     </section>
     <!-- Contact Form -->
     <section>
-        <div class="contact-form" id="contact-form">
+        <div class="contact-form">
             <h2>Get In Touch!</h2>
-            <form action="/submitform">
-                <p>
+            <form id="contact-form">
                 <p>
                     <label>Name:</label>
                     <br>
-                    <input type="text" id="Last Name Input" placeholder="Name" name="lastName">
+                    <input type="text" id="form-name" required placeholder="Name" name="lastName">
                     <label>Email:</label>
                     <br>
-                    <input type="email" id="Email Address Input" placeholder="Email" name="userEmail" required>
-                </p>
-                <p>
+                    <input type="email" id="form-email" required placeholder="Email" name="userEmail">
                     <label>Message:</label> <br>
-                    <textarea id="message-input Input" name="userMessage" placeholder="Input your message here" rows="5"
-                        cols="80" required></textarea>
+                    <textarea id="form-message" name="userMessage" required placeholder="Input your message here"
+                        rows="5" cols="80"></textarea>
                 </p>
                 <p>
-                    <button class="btn">Submit</button>
-                </p>
+                    <button type="submit" class="btn">Submit</button>
                 </p>
             </form>
         </div>
@@ -196,6 +191,7 @@
             reserved.
         </p>
     </footer>
+    <script src="index.js"></script>
 </body>
 
 </html>
