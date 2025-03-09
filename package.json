@@ -1,0 +1,19 @@
+{
+  "name": "hpa-website",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/2bitburrito/HPA-website#readme",
+  "bugs": {
+    "url": "https://github.com/2bitburrito/HPA-website/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2bitburrito/HPA-website.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
