@@ -23,6 +23,7 @@ async function initializeContactForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    console.log("submitted");
 
     const formData = {
       name: document.getElementById("form-name").value,
