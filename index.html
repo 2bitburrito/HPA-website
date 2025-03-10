@@ -41,7 +41,7 @@
         </nav>
         <div class="hero-content">
             <h1 id="title">
-                sound recordist & ENGINEER <br />Based in Melbourne Australia
+                Melbourne Sound Recordist <br />Based in Melbourne Australia
             </h1>
             <a href="#contact-form" class="btn">Get in Touch</a>
         </div>
@@ -54,9 +54,9 @@
         <div class="aboutme-content">
             <img src="Images/REM_0394 BTS Chefchaouen 2.jpeg" alt="Hugh Palmer" id="Hugh-img" />
             <p id="about-me-p">
-                SOUND RECORDIST Based in Melbourne, Australia I am a Melbourne Sound
-                Recordist who is passionate about recording sound for any medium. I
-                have a tireless work ethic and strive to ensure that every project
+                <strong>SOUND RECORDIST Based in Melbourne, Australia.</strong>
+                I am a Melbourne Sound Recordist who is passionate about recording sound for any medium.
+                I have a tireless work ethic and strive to ensure that every project
                 sounds the very best that it can while also bringing a friendly and
                 calm demeanor and an easy going attitude.
                 <br />
@@ -150,19 +150,55 @@
             </section>
         </section>
     </section>
+    <!-- About  -->
+    <section>
+        <div id="external-links">
+            <h2>Stuff I Make</h2>
+            <p>
+                I am also obsessed with making cool and (hopefully) useful stuff.
+            </p>
+            <p>
+                You can check out some of my side projects below:
+            </p>
+            <div class="side-projects">
+                <div class="proj">
+                    <a class="ext-links" href="https://www.dhundesigns.com" target="_blank" rel="noopener noreferrer">
+                        <img width="150" height="150" class="link-img" src="./Images/Black on White.png"
+                            alt="Dhun Designs">
+                    </a>
+                </div>
+                <div class="proj">
+                    <button class="ext-links copy-button" id="terminal-card">
+                        Copy/Paste in the terminal for API Business Card 📋
+                    </button>
+                </div>
+                <div id="text-copied-alert" hidden="true">Text Copied To Clipboard</div>
+            </div>
+            <!-- TODO: add this when marketing site is live -->
+            <!-- <div>
+                <a class="ext-links" href="http://www.metasound-tools.com" target="_blank" rel="noopener noreferrer">
+                    Meta Sound Tools
+                </a>
+            </div> -->
+            <p>
+                This site was built with AWS.
+            </p>
+            <hr width="100%">
+        </div>
+    </section>
     <!-- Contact Form -->
     <section>
         <div class="contact-form">
             <h2>Get In Touch!</h2>
             <form id="contact-form">
                 <p>
-                    <label>Name:</label>
+                    <label for="form-name">Name:</label>
                     <br>
                     <input type="text" id="form-name" required placeholder="Name" name="lastName">
-                    <label>Email:</label>
+                    <label for="form-email">Email:</label>
                     <br>
                     <input type="email" id="form-email" required placeholder="Email" name="userEmail">
-                    <label>Message:</label> <br>
+                    <label for="form-message">Message:</label> <br>
                     <textarea id="form-message" name="userMessage" required placeholder="Input your message here"
                         rows="5" cols="80"></textarea>
                 </p>
@@ -187,7 +223,7 @@
             </a>
         </div>
         <p>
-            &copy; 2024 Hugh Palmer Audio - Melbourne Sound Recordist. All rights
+            Made by me &copy; 2024 Hugh Palmer Audio - Melbourne Sound Recordist. All rights
             reserved.
         </p>
     </footer>

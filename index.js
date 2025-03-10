@@ -52,9 +52,25 @@ async function initializeContactForm() {
 
   form.addEventListener("submit", handleSubmit);
 }
+async function initComponents() {
+  const API_TERMINAL_CMD =
+    "curl -X GET https://kknoebyz6h.execute-api.ap-southeast-2.amazonaws.com/prod/businessCard";
+  const btn = document.getElementById("terminal-card");
+  const copyAlert = document.getElementById("text-copied-alert");
+
+  async function copyToClipboard(e) {
+    navigator.clipboard.writeText(API_TERMINAL_CMD);
+    copyAlert.hidden = false;
+    setTimeout(() => {
+      copyAlert.hidden = true;
+    }, 3000);
+  }
+  btn.onclick = copyToClipboard;
+}
 
 // Initialize everything when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
   initializeNavigation();
   initializeContactForm();
+  initComponents();
 });
