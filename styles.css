@@ -502,4 +502,37 @@ footer p {
   nav ul li a {
     font-size: 1.2em;
   }
+  .contact-form {
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    max-width: 100%;
+    font-size: 16px; /* iOS minimum font size to prevent zooming */
+    padding: 8px;
+    box-sizing: border-box;
+  }
+
+  .contact-form textarea {
+    min-height: 100px;
+  }
+
+  .contact-form .btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  .side-projects {
+    font-size: 16px;
+  }
+  #external-links p {
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 10px;
+  }
 }

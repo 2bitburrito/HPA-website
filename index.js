@@ -29,6 +29,7 @@ async function initializeContactForm() {
       email: document.getElementById("form-email").value,
       message: document.getElementById("form-message").value,
     };
+
     const jsonData = JSON.stringify(formData);
     try {
       const response = await fetch(
