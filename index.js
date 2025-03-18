@@ -36,7 +36,10 @@ async function initializeContactForm() {
         "https://q9ut7p24g0.execute-api.ap-southeast-2.amazonaws.com/dev/contact",
         {
           method: "POST",
-          headers: { "content-type": "application/json" },
+          headers: {
+            "content-type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
           body: jsonData,
         }
       );
