@@ -40,6 +40,8 @@ async function initializeContactForm() {
             "content-type": "application/json",
             "Access-Control-Allow-Origin": "*",
           },
+          mode: "cors",
+          credentials: "omit",
           body: jsonData,
         }
       );
