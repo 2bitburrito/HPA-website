@@ -46,10 +46,8 @@ async function initializeContactForm() {
       );
       const res = await response.json();
       if (res.success) {
-        alert("EMAIL SENT SUCCESSFUL");
-        formData.name = "";
-        formData.email = "";
-        formData.message = "";
+        alert("EMAIL SEND SUCCESSFUL");
+        form.reset();
       } else {
         alert("EMAIL SEND UNSUCCESSFUL");
       }
