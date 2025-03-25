@@ -39,7 +39,7 @@ async function initializeContactForm() {
           headers: {
             "content-type": "application/json",
           },
-          mode: "cors",
+          mode: "no-cors",
           credentials: "omit",
           body: jsonData,
         }
