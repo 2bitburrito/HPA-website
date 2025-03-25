@@ -33,7 +33,7 @@ async function initializeContactForm() {
     const jsonData = JSON.stringify(formData);
     try {
       const response = await fetch(
-        "https://q9ut7p24g0.execute-api.ap-southeast-2.amazonaws.com/prod/contact",
+        "https://q9ut7p24g0.execute-api.ap-southeast-2.amazonaws.com/dev/contact",
         {
           method: "POST",
           headers: {
