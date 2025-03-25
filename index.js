@@ -45,9 +45,12 @@ async function initializeContactForm() {
         }
       );
       const res = await response.json();
+
       if (res.success) {
         alert("EMAIL SEND SUCCESSFUL");
-        form.reset();
+        document.getElementById("form-message").value = "";
+        document.getElementById("form-email").value = "";
+        document.getElementById("form-name").value = "";
       } else {
         alert("EMAIL SEND UNSUCCESSFUL");
       }
