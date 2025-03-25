@@ -39,7 +39,7 @@ async function initializeContactForm() {
           headers: {
             "content-type": "application/json",
           },
-          mode: "no-cors",
+          mode: "cors",
           credentials: "omit",
           body: jsonData,
         }
@@ -47,6 +47,9 @@ async function initializeContactForm() {
       const res = await response.json();
       if (res.success) {
         alert("EMAIL SENT SUCCESSFUL");
+        formData.name = "";
+        formData.email = "";
+        formData.message = "";
       } else {
         alert("EMAIL SEND UNSUCCESSFUL");
       }
