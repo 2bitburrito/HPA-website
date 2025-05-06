@@ -140,7 +140,7 @@ h2 {
   }
 }
 .hero {
-  background: url(Images/yomex-owo-zRDoTgjDvCc-unsplash.jpg) no-repeat center
+  background: url(Images/sound-recordist-hugh-palmer-melbourne-festival.jpeg) no-repeat center
     center/cover;
   background-attachment: fixed;
   height: 100vh;
@@ -153,9 +153,12 @@ h2 {
   position: relative;
 }
 .subtext {
+  background-color: rgba(21, 27, 41, 0.61);
   font-variant: small-caps;
   font-stretch: expanded;
-  padding-top: 1em;
+  margin-top: 1em;
+  padding: 0.5em;
+  border-radius: 1rem;
 }
 
 h1 {
