@@ -24,14 +24,12 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1px;
   height: 100px;
-  width: 100%; /* Ensures full width */
+  width: 100%; 
   position: fixed;
   top: 0;
   transition: background-color 0.3s ease;
   z-index: 1000;
-  /* background: linear-gradient(to bottom, #090d1747 0%, #151b29 80%), url("Images/background images/pawel-czerwinski-eybM9n4yrpE-unsplash.jpg") repeat-x 50% 28% / 400px auto; */
 }
 nav a {
   color: #ffa260;
@@ -140,7 +138,7 @@ h2 {
   }
 }
 .hero {
-  background: url(Images/sound-recordist-hugh-palmer-melbourne-festival.jpeg) no-repeat center
+  background: url(Images/DSC_1335.jpg) no-repeat center
     center/cover;
   background-attachment: fixed;
   height: 100vh;
@@ -463,6 +461,7 @@ footer p {
   .gear-list .gear-content {
     text-align: center;
     width: 100%;
+    padding: 0;
   }
 
   .gear-list .gear-image img {
@@ -532,6 +531,12 @@ footer p {
   }
   .side-projects {
     font-size: 16px;
+    flex-direction: column;
+  }
+  .external-links {
+    width: 60px;
+    height: 60px;
+    padding: 0px 20px;
   }
   #external-links p {
     padding: 12px;
