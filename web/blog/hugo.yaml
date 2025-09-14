@@ -1,0 +1,42 @@
+languageCode: "en-us"
+title: "Hugh Palmer's Blog"
+ignoreLogs: ["warning-goldmark-raw-html"]
+baseURL: "/blog/"
+theme: "PaperMod"
+enableInlineShortcodes: true
+enableRobotsTXT: true
+params:
+  env: production
+  ShowCodeCopyButtons: true
+  homeInfoParams:
+    Title: Welcome to my blog
+    # Content: "![Nature drawing](assets/music_gopher.png)"
+  socialIcons:
+    - name: github
+      title: Check out my Github
+      url: "https://github.com/2bitburrito/"
+    - name: LinkedIn
+      title: Reach out on LinkedIn
+      url: "https://www.linkedin.com/in/hugh-palmer-0a8139a5/"
+
+menu:
+  main:
+    - identifier: home
+      name: Home
+      url: https://hughpalmer.com.au
+      weight: 1
+    - identifier: blog
+      name: Blog
+      url: /blog/
+      weight: 2
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true

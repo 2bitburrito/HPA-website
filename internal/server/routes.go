@@ -10,7 +10,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 	mux := http.NewServeMux()
 
 	// Register routes
-	mux.Handle("/app/", http.StripPrefix("/app", http.FileServer(http.Dir("./web/static"))))
+	mux.Handle("/app/", http.StripPrefix("/app/", http.FileServer(http.Dir("./web/static"))))
+
+	mux.Handle("/blog/", http.StripPrefix("/blog/", http.FileServer(http.Dir("./web/blog/public/"))))
 	mux.HandleFunc("/health", s.CheckHealth)
 
 	// Wrap the mux with CORS middleware
