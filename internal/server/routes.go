@@ -10,11 +10,12 @@ func (s *Server) RegisterRoutes() http.Handler {
 	mux := http.NewServeMux()
 
 	// Register routes
-	mux.Handle("/app/", http.StripPrefix("/app/", http.FileServer(http.Dir("./web/static"))))
+	mux.Handle("/recordist/", http.StripPrefix("/recordist/", http.FileServer(http.Dir("./static/paths/recordist/"))))
+	mux.Handle("/blog/", http.StripPrefix("/blog/", http.FileServer(http.Dir("./static/paths/blog/public/"))))
 
-	mux.Handle("/blog/", http.StripPrefix("/blog/", http.FileServer(http.Dir("./web/blog/public/"))))
 	mux.HandleFunc("/health", s.CheckHealth)
 
+	mux.Handle("/", http.FileServer(http.Dir("./static/")))
 	// Wrap the mux with CORS middleware
 	return s.corsMiddleware(mux)
 }

@@ -1,5 +1,5 @@
 languageCode: "en-us"
-title: "Hugh Palmer's Blog"
+title: "Bit Depth Diary"
 ignoreLogs: ["warning-goldmark-raw-html"]
 baseURL: "/blog/"
 theme: "PaperMod"
@@ -9,8 +9,8 @@ params:
   env: production
   ShowCodeCopyButtons: true
   homeInfoParams:
-    Title: Welcome to my blog
-    # Content: "![Nature drawing](assets/music_gopher.png)"
+    Title: Hugh Palmer's Blog
+    Content: "![Coding Screen](../../Images/coding-screen-cropped.png)"
   socialIcons:
     - name: github
       title: Check out my Github
@@ -22,12 +22,12 @@ params:
 menu:
   main:
     - identifier: home
-      name: Home
+      name: Website
       url: https://hughpalmer.com.au
       weight: 1
     - identifier: blog
       name: Blog
-      url: /blog/
+      url: /
       weight: 2
 
 outputs:

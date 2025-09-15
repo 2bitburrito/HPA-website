@@ -1,4 +1,3 @@
-/* General Styles */
 body {
   font-family: "SUSE", sans-serif;
   margin: 0;
@@ -9,15 +8,12 @@ body {
   box-sizing: border-box;
 }
 
-/* Header */
 header {
   color: #fff;
   padding: 0;
-  /* background-color:#151b29; */
   text-transform: capitalize;
   font-family: "SUSE", sans-serif;
   font-size: 23px;
-  /* WANT TO ADD A SUBTLE WAVEFORM HERE? */
 }
 
 nav {
@@ -31,6 +27,7 @@ nav {
   transition: background-color 0.3s ease;
   z-index: 1000;
 }
+
 nav a {
   color: #ffa260;
   padding: 1em;
@@ -190,7 +187,7 @@ h1 {
 /* About Me Section */
 .aboutme {
   max-width: 1400px;
-  margin: 50px auto;
+  margin: 100px;
   padding: 0 20px;
 }
 .aboutme-content {
@@ -217,7 +214,7 @@ h1 {
   justify-content: center;
   max-width: 1400px;
   gap: 20px;
-  margin: 50px auto;
+  margin: 100px;
   text-align: left;
 }
 #gear-list {
