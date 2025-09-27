@@ -1,3 +1,4 @@
+// Package server is the entrypoint for the main server
 package server
 
 import (
