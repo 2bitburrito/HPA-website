@@ -14,6 +14,8 @@ func (s *Server) RegisterRoutes() http.Handler {
 	mux.Handle("/recordist/", http.StripPrefix("/recordist/", http.FileServer(http.Dir("./static/paths/recordist/"))))
 	mux.Handle("/blog/", http.StripPrefix("/blog/", http.FileServer(http.Dir("./static/paths/blog/public/"))))
 
+	mux.HandleFunc("/api/contact/", s.HandleContactForm)
+
 	mux.HandleFunc("/health", s.CheckHealth)
 
 	mux.Handle("/", http.FileServer(http.Dir("./static/")))

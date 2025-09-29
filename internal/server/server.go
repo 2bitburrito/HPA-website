@@ -8,20 +8,22 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/2bitburrito/hpa-website/internal/setup"
 	_ "github.com/joho/godotenv/autoload"
 )
 
 type Server struct {
-	port int
+	port         int
+	Dependencies setup.Dependencies
 }
 
-func NewServer() *http.Server {
+func NewServer(params setup.Dependencies) *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	NewServer := &Server{
-		port: port,
+		port:         port,
+		Dependencies: params,
 	}
 
-	// Declare Server config
 	server := &http.Server{
 		Addr:         fmt.Sprintf(":%d", NewServer.port),
 		Handler:      NewServer.RegisterRoutes(),

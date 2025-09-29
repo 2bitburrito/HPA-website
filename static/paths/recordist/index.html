@@ -15,6 +15,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap" rel="stylesheet" />
   <link rel="icon" href="../icons/mixer1.png" type="image/x-icon" />
+  <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js"
+    integrity="sha384-ZBXiYtYQ6hJ2Y0ZNoYuI+Nq5MqWBr+chMrS/RkXpNzQCApHEhOt2aY8EJgqwHLkJ"
+    crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -181,22 +184,25 @@
   <section>
     <div class="contact-form">
       <h2>Get In Touch!</h2>
-      <form id="contact-form">
+      <span id="form-response"></span>
+      <form hx-indicator="#spinner" hx-on::after-request="if(event.detail.successful) this.reset()"
+        hx-post="/api/contact/" hx-target="#form-response" id="contact-form">
         <p>
           <label for="form-name">Name:</label>
           <br>
-          <input type="text" id="form-name" required placeholder="Name" name="lastName">
+          <input type="text" id="form-name" required placeholder="Name" name="form-name">
           <label for="form-email">Email:</label>
           <br>
-          <input type="email" id="form-email" required placeholder="Email" name="userEmail">
+          <input type="email" id="form-email" required placeholder="Email" name="form-email">
           <label for="form-message">Message:</label> <br>
-          <textarea id="form-message" name="userMessage" required placeholder="Input your message here" rows="5"
+          <textarea id="form-message" name="form-message" required placeholder="Input your message here" rows="5"
             cols="80"></textarea>
         </p>
         <p>
           <button type="submit" class="btn">Submit</button>
         </p>
       </form>
+      <div id="spinner" class="htmx-indicator">Sending...</div>
     </div>
   </section>
 

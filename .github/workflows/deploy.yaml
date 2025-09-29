@@ -1,0 +1,45 @@
+name: build and deploy
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: "^1.25.0"
+      - run: go version
+
+      - name: Build
+        run: GOOS=linux GOARCH=arm64 go build -v -o main ./cmd/server/main.go
+
+      - name: Test
+        run: make test
+
+      - name: Prepare SSH key
+        run: |
+          echo "${{ secrets.PRIV_KEY }}" > key.pem
+          chmod 600 key.pem
+
+      - name: Copy files to EC2
+        run: |
+          scp -i key.pem -o StrictHostKeyChecking=no ./main ubuntu@${{ secrets.EC2_DNS }}:/home/ubuntu/main
+          scp -i key.pem -o StrictHostKeyChecking=no -r ./static ubuntu@${{ secrets.EC2_DNS }}:/home/ubuntu/static
+
+      - name: Deploy on EC2
+        run: |
+          ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_DNS }} << 'EOF'
+          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+          sudo systemctl restart caddy
+
+          # Restart your Go service (or run directly if no systemd yet)
+          pkill main || true
+          nohup ./main > server.log 2>&1 &
+          EOF

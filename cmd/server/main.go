@@ -9,7 +9,8 @@ import (
 	"syscall"
 	"time"
 
-	"hpa-website/internal/server"
+	"github.com/2bitburrito/hpa-website/internal/server"
+	"github.com/2bitburrito/hpa-website/internal/setup"
 )
 
 func gracefulShutdown(apiServer *http.Server, done chan bool) {
@@ -38,8 +39,11 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 }
 
 func main() {
-
-	server := server.NewServer()
+	deps, err := setup.Setup()
+	if err != nil {
+		panic(err)
+	}
+	server := server.NewServer(deps)
 
 	// Create a done channel to signal when the shutdown is complete
 	done := make(chan bool, 1)
@@ -47,7 +51,7 @@ func main() {
 	// Run graceful shutdown in a separate goroutine
 	go gracefulShutdown(server, done)
 
-	err := server.ListenAndServe()
+	err = server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		panic(fmt.Sprintf("http server error: %s", err))
 	}
