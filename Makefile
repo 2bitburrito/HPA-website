@@ -9,6 +9,10 @@ build:
 	
 	@go build -o main cmd/server/main.go
 
+# Build for ec2
+build-ec2:
+	@GOOS=linux GOARCH=arm64 go build -v -o main ./cmd/server/main.go
+
 # Run the application
 run:
 	@go run cmd/server/main.go

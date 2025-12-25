@@ -16,7 +16,7 @@ jobs:
       - run: go version
 
       - name: Build
-        run: GOOS=linux GOARCH=arm64 go build -v -o main ./cmd/server/main.go
+        run: make build-ec2
 
       - name: Test
         run: make test
@@ -26,20 +26,26 @@ jobs:
           echo "${{ secrets.PRIV_KEY }}" > key.pem
           chmod 600 key.pem
 
-      - name: Copy files to EC2
-        run: |
-          scp -i key.pem -o StrictHostKeyChecking=no ./main ubuntu@${{ secrets.EC2_DNS }}:/home/ubuntu/main
-          scp -i key.pem -o StrictHostKeyChecking=no -r ./static ubuntu@${{ secrets.EC2_DNS }}:/home/ubuntu/static
+      # - name: Deploy on EC2
+      #   run: |
+      #     ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_DNS }} << 'EOF'
+      #     export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #
+      #     sudo systemctl restart caddy
+      #
+      #     # Restart your Go service (or run directly if no systemd yet)
+      #     pkill main || true
+      #     nohup ./main > server.log 2>&1 &
+      #     EOF
 
-      - name: Deploy on EC2
-        run: |
-          ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_DNS }} << 'EOF'
-          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-          sudo systemctl restart caddy
-
-          # Restart your Go service (or run directly if no systemd yet)
-          pkill main || true
-          nohup ./main > server.log 2>&1 &
-          EOF
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: "-rlgoDzvc -i --delete"
+          REMOTE_HOST: ${{ secrets.EC2_DNS }}
+          REMOTE_USER: ubuntu
+          TARGET: "app/"
+          EXCLUDE: "/dist/, /node_modules/, /internal/, .air.toml, /iac/"
+          SCRIPT_AFTER_REQUIRED:
