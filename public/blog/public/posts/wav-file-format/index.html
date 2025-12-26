@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>The Wav File Format | Bit Depth Diary</title>
+<meta name="keywords" content="">
+<meta name="description" content="A deep dive into wav files used in Broadcast applications
+As audio professionals we make, delete, edit, crush, fix and split wav files every day. But have you ever really looked into a wav file and why it works the way that it does? Let&rsquo;s examine a bit of the underlying low level implementation of the standard.
+The History
+The Wav file container has been around since 1991 and was introduced by Microsoft and IBM as part of a larger project to create a standardised container for multimedia called RIFF. It soon became widely used as a format for pro audio files due to its lossless nature and ability to hold 24bit / 48kHz files.">
+<meta name="author" content="">
+<link rel="canonical" href="/blog/posts/wav-file-format/">
+<link crossorigin="anonymous" href="/blog/assets/css/stylesheet.08f7d74f0ada0f975d29ae436285b61ed7a719d05f350cb888d00341642995a2.css" integrity="sha256-CPfXTwraD5ddKa5DYoW2HtenGdBfNQy4iNADQWQplaI=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/blog/apple-touch-icon.png">
+<link rel="mask-icon" href="/blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="/blog/posts/wav-file-format/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="/blog/posts/wav-file-format/">
+  <meta property="og:site_name" content="Bit Depth Diary">
+  <meta property="og:title" content="The Wav File Format">
+  <meta property="og:description" content="A deep dive into wav files used in Broadcast applications As audio professionals we make, delete, edit, crush, fix and split wav files every day. But have you ever really looked into a wav file and why it works the way that it does? Let’s examine a bit of the underlying low level implementation of the standard.
+The History The Wav file container has been around since 1991 and was introduced by Microsoft and IBM as part of a larger project to create a standardised container for multimedia called RIFF. It soon became widely used as a format for pro audio files due to its lossless nature and ability to hold 24bit / 48kHz files.">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-09-14T20:30:05+10:00">
+    <meta property="article:modified_time" content="2025-09-14T20:30:05+10:00">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The Wav File Format">
+<meta name="twitter:description" content="A deep dive into wav files used in Broadcast applications
+As audio professionals we make, delete, edit, crush, fix and split wav files every day. But have you ever really looked into a wav file and why it works the way that it does? Let&rsquo;s examine a bit of the underlying low level implementation of the standard.
+The History
+The Wav file container has been around since 1991 and was introduced by Microsoft and IBM as part of a larger project to create a standardised container for multimedia called RIFF. It soon became widely used as a format for pro audio files due to its lossless nature and ability to hold 24bit / 48kHz files.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "/blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "The Wav File Format",
+      "item": "/blog/posts/wav-file-format/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The Wav File Format",
+  "name": "The Wav File Format",
+  "description": "A deep dive into wav files used in Broadcast applications As audio professionals we make, delete, edit, crush, fix and split wav files every day. But have you ever really looked into a wav file and why it works the way that it does? Let\u0026rsquo;s examine a bit of the underlying low level implementation of the standard.\nThe History The Wav file container has been around since 1991 and was introduced by Microsoft and IBM as part of a larger project to create a standardised container for multimedia called RIFF. It soon became widely used as a format for pro audio files due to its lossless nature and ability to hold 24bit / 48kHz files.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "A deep dive into wav files used in Broadcast applications As audio professionals we make, delete, edit, crush, fix and split wav files every day. But have you ever really looked into a wav file and why it works the way that it does? Let’s examine a bit of the underlying low level implementation of the standard.\nThe History The Wav file container has been around since 1991 and was introduced by Microsoft and IBM as part of a larger project to create a standardised container for multimedia called RIFF. It soon became widely used as a format for pro audio files due to its lossless nature and ability to hold 24bit / 48kHz files.\nThen in 1997 the “European Broadcasting Union” (EBU) extended the format to BWF (Broadcast Wave Format) which kept the same structure for a wav file while adding a BEXT chunk. The bext chunk contains a structured format for storing data such as timecode data sample rate etc. While this bext chunk is useful it is also severely lacking when it comes to the metadata needed for a professional Location Sound workflow due to character limitations and inflexible input fields. This is where iXML comes in but more on that shortly.\nWav File Structure First let’s have a look at what a typical file is actually made up of. At a low level all files are just ones and zeros known as a bit. We typically group a series of bits together into groups of 8 known as a byte (fun fact: a half byte or 4x bits is known as a nibble).\nSo a typical byte looks like this: 01101101 and will allow for a maximum of 256 values (or 28). Readers familiar with MIDI will recognise this value as the range of values that midi channels use to communicate.\nHowever those of you who remember the sound from the original NES will know that 8-bits per sample aren’t enough to realistically represent the human voice. In order to do that we must stack multiple bytes together into a longer word. This is where we get 24bit (and the newer 32bit). This gives us over 16 million points to choose from per sample.\nBut a wav file is much more than just a collection of samples as we have discussed. A wav file will always need to contain several other chunks containing key data.\n![[IMG_6966.jpeg]]\nSource\nThe structure of a basic wav file is as follows:\nRIFF: The file begins with the ASCII characters RIFF, identifying the file format as a RIFF file.\nSize: Immediately after ‘RIFF’, a 4-byte field specifies the size of the entire RIFF data (excluding the RIFF and size fields). This 32-bit size field has a limit of 4 GB, which is why standard Wav files have a maximum size of 4 GB.\nWAVE: After the size field, the identifier WAVE indicates that this RIFF file is specifically a WAV file\nfmt : Or the format chunk. This is the first sub-chunk within the RIFF/WAVE structure, and it contains essential information about the audio format for interpreting the raw audio data in the file such as:\n‘fmt ‘: This ASCII string identifies the chunk as the format chunk. Size: The following 4-byte field indicates the size of the format data. Audio format (e.g., PCM for uncompressed audio). Number of channels (e.g., 1 for mono, 2 for stereo). Sample rate (e.g., 44100 Hz). … And a few more fields data: This is the data chunk that contains the actual audio data, organised as a series of samples including a sub-header which indicates the size of the remaining audio data. This is the actual audio data, which is typically encoded in PCM format. Each sample is arranged according to the format specified in the fmt chunk. For example, in a 4 channel polywav, 24-bit WAV file, each sample consists of four 24-bit values (one per channel), repeated for the duration of the recording.\niXML: In 2003 this optional chunk was included in the specification. It allows much more flexibility in how you add metadata.\n![[Screenshot 2024-11-07 at 7.39.42 pm.png]]\nAs you can see it is a nested tree structure similar to many other structures in computer design (like HTML for example). These iXMLs have no constraints to how the metadata is laid out or even what metadata is included. For example in an Aaton Cantar file (RIP) they even include data such as routing information, pan pot position and Ambisonics metadata.\n![[Screenshot 2024-11-07 at 7.41.35 pm.png]]\nBut how do we view these fields and what does it practically look like to store data inside a wav file? I find concepts like these all academic until I can actually see them in action or interact with them in some way. That is until I discovered the ability to open these files in a hex editor. Here I’m using the free and open-source Hex Fiend.\n![[Screenshot 2024-11-07 at 7.59.39 pm.png]]\nOn the left you can see the data represented in text. On the left is Hexadecimal (a base 16 digit) which is in essence an easier way for developers to view binary as each hexadecimal represents 4 bits - making it more compact that raw binary. On the right the program is translating the hex into utf8 digits for us to read. The beauty of this is that you can actually see the seperate chunks and headers - along with the padding in the file which allows for some flexibility in the size of the bext and ixml chunks.\n![[Screenshot 2024-11-07 at 8.06.39 pm.png]]\nEditing a File’s Metadata Now interestingly due to the size headers we cannot just open a text editor and mess with the metadata directly. The main reason for this is unless you have exactly the same character counts within the file your header chunks size calculations will be incorrect and thus break the wav file’s expected format.\nInstead, editing needs to be handled much more delicately on a low-level programming level. So for now there are three options although they are quite outdated and have their own drawbacks and quirks.\nBWF MetaEdit - This tool allows viewing of multiple different formats however it’s quite an outdated interface and won’t allow playback of any kind. Wave Agent - A great and very well engineered tool for it’s time however it doesn’t handle modern formats such as 32-bit float and RF64. Meta Sound Tools - Now time for a shameless plug: I’ve been working tirelessly on this app which does all of the things listed here and much more. If you’re after an all in one toolbox for bwav files this is the one. ",
+  "wordCount" : "1111",
+  "inLanguage": "en",
+  "datePublished": "2025-09-14T20:30:05+10:00",
+  "dateModified": "2025-09-14T20:30:05+10:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/blog/posts/wav-file-format/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Bit Depth Diary",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/blog/" accesskey="h" title="Bit Depth Diary (Alt + H)">Bit Depth Diary</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://hughpalmer.com.au" title="Website">
+                    <span>Website</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="/blog/" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      The Wav File Format
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+    </h1>
+    <div class="post-meta"><span title='2025-09-14 20:30:05 +1000 AEST'>September 14, 2025</span>
+
+</div>
+  </header> 
+  <div class="post-content"><h4 id="a-deep-dive-into-wav-files-used-in-broadcast-applications"><em>A deep dive into wav files used in Broadcast applications</em><a hidden class="anchor" aria-hidden="true" href="#a-deep-dive-into-wav-files-used-in-broadcast-applications">#</a></h4>
+<p>As audio professionals we make, delete, edit, crush, fix and split wav files every day. But have you ever really looked into a wav file and why it works the way that it does? Let&rsquo;s examine a bit of the underlying low level implementation of the standard.</p>
+<h3 id="the-history">The History<a hidden class="anchor" aria-hidden="true" href="#the-history">#</a></h3>
+<p>The Wav file container has been around since 1991 and was introduced by Microsoft and IBM as part of a larger project to create a standardised container for multimedia called RIFF. It soon became widely used as a format for pro audio files due to its lossless nature and ability to hold 24bit / 48kHz files.</p>
+<p>Then in 1997 the “European Broadcasting Union” (EBU) extended the format to BWF (Broadcast Wave Format) which kept the same structure for a wav file while adding a <code>BEXT</code> chunk. The bext chunk contains a structured format for storing data such as timecode data sample rate etc. While this bext chunk is useful it is also severely lacking when it comes to the metadata needed for a professional  Location Sound workflow due to character limitations and inflexible input fields. This is where iXML comes in but more on that shortly.</p>
+<h3 id="wav-file-structure">Wav File Structure<a hidden class="anchor" aria-hidden="true" href="#wav-file-structure">#</a></h3>
+<p>First let&rsquo;s have a look at what a typical file is actually made up of. At a low level all files are just ones and zeros known as a bit. We typically group a series of bits together into groups of 8 known as a byte (fun fact: a half byte or 4x bits is known as a nibble).</p>
+<p>So a typical byte looks like this: <code>01101101</code> and will allow for a maximum of 256 values (or 2<sup>8</sup>). Readers familiar with MIDI will recognise this value as the range of values that midi channels use to communicate.</p>
+<p>However those of you who remember the sound from the original NES will know that 8-bits per sample aren&rsquo;t enough to realistically represent the human voice. In order to do that we must stack multiple bytes together into a longer word. This is where we get 24bit (and the newer 32bit). This gives us over 16 million points to choose from per sample.</p>
+<p>But a wav file is much more than just a collection of samples as we have discussed. A wav file will always need to contain several other chunks containing key data.</p>
+<p>![[IMG_6966.jpeg]]</p>
+<p><em><a href="https://tech.ebu.ch/docs/tech/tech3306v1_0.pdf">Source</a></em></p>
+<p>The structure of a basic wav file is as follows:</p>
+<ul>
+<li>
+<p><strong>RIFF</strong>: The file begins with the ASCII characters RIFF, identifying the file format as a RIFF file.</p>
+</li>
+<li>
+<p><strong>Size</strong>: Immediately after ‘RIFF’, a 4-byte field specifies the size of the entire RIFF data (excluding the RIFF and size fields). This 32-bit size field has a limit of 4 GB, which is why standard Wav files have a maximum size of 4 GB.</p>
+</li>
+<li>
+<p><strong>WAVE</strong>: After the size field, the identifier WAVE indicates that this RIFF file is specifically a WAV file</p>
+</li>
+<li>
+<p><strong>fmt</strong> : Or the format chunk. This is the first sub-chunk within the RIFF/WAVE structure, and it contains essential information about the audio format for interpreting the raw audio data in the file such as:</p>
+<ul>
+<li>‘fmt ‘: This ASCII string identifies the chunk as the format chunk.</li>
+<li>Size: The following 4-byte field indicates the size of the format data.</li>
+<li>Audio format (e.g., PCM for uncompressed audio).</li>
+<li>Number of channels (e.g., 1 for mono, 2 for stereo).</li>
+<li>Sample rate (e.g., 44100 Hz).</li>
+<li>&hellip; And a few more fields</li>
+</ul>
+</li>
+<li>
+<p><strong>data</strong>: This is the data chunk that contains the actual audio data, organised as a series of samples including a sub-header which indicates the size of the remaining audio data. This is the actual audio data, which is typically encoded in PCM format. Each sample is arranged according to the format specified in the fmt  chunk. For example, in a 4 channel polywav, 24-bit WAV file, each sample consists of four 24-bit values (one per channel), repeated for the duration of the recording.</p>
+</li>
+<li>
+<p><strong>iXML</strong>: In 2003 this optional chunk was included in the specification. It allows much more flexibility in how you add metadata.</p>
+</li>
+</ul>
+<p>![[Screenshot 2024-11-07 at 7.39.42 pm.png]]</p>
+<p>As you can see it is a nested tree structure similar to many other structures in computer design (like HTML for example). These iXMLs have no constraints to how the metadata is laid out or even what metadata is included. For example in an Aaton Cantar file (RIP) they even include data such as routing information, pan pot position and Ambisonics metadata.</p>
+<p>![[Screenshot 2024-11-07 at 7.41.35 pm.png]]</p>
+<h6 id="but-how-do-we-view-these-fields-and-what-does-it-practically-look-like-to-store-data-inside-a-wav-file">But how do we view these fields and what does it practically look like to store data inside a wav file?<a hidden class="anchor" aria-hidden="true" href="#but-how-do-we-view-these-fields-and-what-does-it-practically-look-like-to-store-data-inside-a-wav-file">#</a></h6>
+<p>I find concepts like these all academic until I can actually see them in action or interact with them in some way. That is until I discovered the ability to open these files in a hex editor. Here I&rsquo;m using the free and open-source <a href="https://hexfiend.com/">Hex Fiend</a>.</p>
+<p>![[Screenshot 2024-11-07 at 7.59.39 pm.png]]</p>
+<p>On the left you can see the data represented in text. On the left is Hexadecimal (a base 16 digit) which is in essence an easier way for developers to view binary as each hexadecimal represents 4 bits - making it more compact that raw binary. On the right the program is translating the hex into utf8 digits for us to read.  The beauty of this is that you can actually see the seperate chunks and headers - along with the padding in the file which allows for some flexibility in the size of the bext and ixml chunks.</p>
+<p>![[Screenshot 2024-11-07 at 8.06.39 pm.png]]</p>
+<h3 id="editing-a-files-metadata">Editing a File&rsquo;s Metadata<a hidden class="anchor" aria-hidden="true" href="#editing-a-files-metadata">#</a></h3>
+<p>Now interestingly due to the size headers we cannot just open a text editor and mess with the metadata directly. The main reason for this is unless you have exactly the same character counts within the file your header chunks size calculations will be incorrect and thus break the wav file&rsquo;s expected format.</p>
+<p>Instead, editing needs to be handled much more delicately on a low-level programming level. So for now there are three options although they are quite outdated and have their own drawbacks and quirks.</p>
+<ul>
+<li><a href="https://github.com/MediaArea/BWFMetaEdit">BWF MetaEdit</a> - This tool allows viewing of multiple different formats however it&rsquo;s quite an outdated interface and won&rsquo;t allow playback of any kind.</li>
+<li><a href="https://www.sounddevices.com/product/wave-agent-software/">Wave Agent</a> - A great and very well engineered tool for it&rsquo;s time however it doesn&rsquo;t handle modern formats such as 32-bit float and RF64.</li>
+<li><a href="https://metasoundtools.com">Meta Sound Tools</a> - Now time for a shameless plug: I&rsquo;ve been working tirelessly on this app which does all of the things listed here and much more. If you&rsquo;re after an all in one toolbox for bwav files this is the one.</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="/blog/">Bit Depth Diary</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Bit Depth Diary</title>
+    <link>/blog/</link>
+    <description>Recent content on Bit Depth Diary</description>
+    <generator>Hugo -- 0.150.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 14 Sep 2025 20:30:05 +1000</lastBuildDate>
+    <atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Wav File Format</title>
+      <link>/blog/posts/wav-file-format/</link>
+      <pubDate>Sun, 14 Sep 2025 20:30:05 +1000</pubDate>
+      <guid>/blog/posts/wav-file-format/</guid>
+      <description>&lt;h4 id=&#34;a-deep-dive-into-wav-files-used-in-broadcast-applications&#34;&gt;&lt;em&gt;A deep dive into wav files used in Broadcast applications&lt;/em&gt;&lt;/h4&gt;
+&lt;p&gt;As audio professionals we make, delete, edit, crush, fix and split wav files every day. But have you ever really looked into a wav file and why it works the way that it does? Let&amp;rsquo;s examine a bit of the underlying low level implementation of the standard.&lt;/p&gt;
+&lt;h3 id=&#34;the-history&#34;&gt;The History&lt;/h3&gt;
+&lt;p&gt;The Wav file container has been around since 1991 and was introduced by Microsoft and IBM as part of a larger project to create a standardised container for multimedia called RIFF. It soon became widely used as a format for pro audio files due to its lossless nature and ability to hold 24bit / 48kHz files.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
