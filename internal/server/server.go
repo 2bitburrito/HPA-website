@@ -15,6 +15,7 @@ import (
 type Server struct {
 	port         int
 	Dependencies setup.Dependencies
+	Blogs        []Blog
 }
 
 func NewServer(params setup.Dependencies) *http.Server {

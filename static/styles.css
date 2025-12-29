@@ -201,60 +201,12 @@ h1 {
   padding-right: 35px;
 }
 #Hugh-img {
-  width: 50%;
+  width: 25%;
   border-radius: 8%;
   margin: 0 auto;
   display: block;
 }
-/* Gear List */
 
-.gear-list {
-  display: grid;
-  align-items: center;
-  justify-content: center;
-  max-width: 1400px;
-  gap: 20px;
-  margin: 100px;
-  text-align: left;
-}
-#gear-list {
-  background-color: #282e3b;
-}
-.gear-list p {
-  font-size: 0.8em;
-}
-.gear-row {
-  display: flex;
-  grid-template-columns: 1fr 1fr;
-  gap: 0px;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.8s ease;
-}
-.gear-list .icon-box img {
-  width: 8vh;
-  display: inline-block;
-  filter: invert(100%);
-  padding-right: 20px;
-  transition: all 0.7s ease-in;
-  animation: fade-in linear;
-  animation-timeline: view();
-  animation-range: 0 300px;
-}
-.gear-list .gear-content {
-  padding: 20px;
-  width: 42vh;
-}
-.gear-list .gear-image img {
-  max-width: 100%;
-  width: 200px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-.gear-row:hover {
-  transform: scale(1.04);
-}
 /* External Links */
 #external-links {
   display: flex;

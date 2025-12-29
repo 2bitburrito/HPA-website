@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Hugh Palmer - Melbourne based Sound Recordist. Sound Engineer, Audio Recording and Mixing in Australia.  Specialising in sound for TVC, Doco, Corporate and Drama Film." />
+  <meta name="keywords"
+    content="Sound Recordist, Melbourne, Australia, Audio Recording, Sound Recordist, Audio Restoration, TVC" />
+  <meta name="author" content="Hugh Palmer" />
+  <title>Hugh Palmer</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap" rel="stylesheet" />
+  <link rel="icon" href="../icons/mixer1.png" type="image/x-icon" />
+  <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js"
+    integrity="sha384-ZBXiYtYQ6hJ2Y0ZNoYuI+Nq5MqWBr+chMrS/RkXpNzQCApHEhOt2aY8EJgqwHLkJ"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <nav id="mainNavbar">
+    <div class="logo" id="logo">
+      <a href="Home.html">Hugh Palmer<span class="spin"> \ </span>Audio<span class="quote">"Sounds
+          Rolling"</span></a>
+    </div>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul>
+      <li>
+        <a href="#">Home</a>
+      </li>
+      <li>
+        <a href="/blog/">Blog</a>
+      </li>
+      <li>
+        <a href="#aboutme">About</a>
+      </li>
+      <li>
+        <a href="#contact-form">Contact</a>
+      </li>
+    </ul>
+  </nav>
+  <!-- About Me Section -->
+  <section style="margin: 100px;" id="aboutme" class="aboutme">
+    <h2>About Me</h2>
+    <div class="aboutme-content">
+      <img src="../Images/REM_0394 BTS Chefchaouen 2.jpeg" alt="Hugh Palmer" id="Hugh-img" />
+      <p id="about-me-p">
+        <strong>PASSIONATE SOFTWARE DEVELOPER based in Melbourne Australia</strong>
+        <br />
+        <br />
+        I make things and fix problems.
+      </p>
+    </div>
+  </section>
+
+  <!-- Blog Index -->
+  <section id="blog-index">
+    <h2>Some of my thoughts...</h2>
+    <div class="blog-list">
+      {{range .Blogs}}
+      <div class="blog-entry">
+        <h3>{{.Name}}</h3>
+        <p>{{.Description}}</p>
+        <a href="{{.URL}}">Read More</a>
+      </div>
+      {{end}}
+      </div>
+  </section>
+  <section>
+    <div id="external-links">
+      <h2>Stuff I Make</h2>
+      <p>
+        I am also obsessed with making cool (and hopefully useful) stuff.
+      </p>
+      <p>
+        You can check out some of my side projects below:
+      </p>
+      <div class="side-projects">
+        <div class="proj">
+          <div>
+            <a class="ext-links" href="http://www.metasoundtools.com" target="_blank" rel="noopener noreferrer">
+              <img width="150" height="150" class="link-img" src="./../Images/mst-icon.png" alt="Meta Sound Tools">
+            </a>
+          </div>
+        </div>
+        <div class="proj">
+          <a class="ext-links" href="https://www.dhundesigns.com" target="_blank" rel="noopener noreferrer">
+            <img width="150" height="150" class="link-img" src="./../Images/Black on White.png" alt="Dhun Designs">
+          </a>
+        </div>
+      </div>
+      <p>
+        This site was built and deployed by me.
+      </p>
+      <hr width="100%">
+    </div>
+  </section>
+  <!-- Contact Form -->
+  <section>
+    <div class="contact-form">
+      <h2>Get In Touch!</h2>
+      <span id="form-response"></span>
+      <form hx-indicator="#spinner" hx-on::after-request="if(event.detail.successful) this.reset()"
+        hx-post="/api/contact/" hx-target="#form-response" id="contact-form">
+        <p>
+          <label for="form-name">Name:</label>
+          <br>
+          <input type="text" id="form-name" required placeholder="Name" name="form-name">
+          <label for="form-email">Email:</label>
+          <br>
+          <input type="email" id="form-email" required placeholder="Email" name="form-email">
+          <label for="form-message">Message:</label> <br>
+          <textarea id="form-message" name="form-message" required placeholder="Input your message here" rows="5"
+            cols="80"></textarea>
+        </p>
+        <p>
+          <button type="submit" class="btn">Submit</button>
+        </p>
+      </form>
+      <div id="spinner" class="htmx-indicator">Sending...</div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="socials">
+      <a href="https://www.linkedin.com/in/hugh-palmer-0a8139a5/" target="_blank" rel="noopener noreferrer">
+        <img src="../Images/LinkedIN_white.png" alt="LinkedIn" width="30" height="30">
+      </a>
+      <a href="https://www.instagram.com/hughpalmerproduction/" target="_blank" rel="noopener noreferrer">
+        <img src="../Images/Instagram_white.png" alt="Instagram" width="30" height="30">
+      </a>
+      <a href="https://github.com/2bitburrito" target="_blank" rel="noopener noreferrer">
+        <img src="../Images/Github_white.png" alt="Github" width="30" height="30">
+      </a>
+    </div>
+    <p>
+      Made by me &copy; 2024 Hugh Palmer Audio - Melbourne Sound Recordist. All rights
+      reserved.
+    </p>
+  </footer>
+  <script src="../../index.js"></script>
+</body>
+
+</html>
