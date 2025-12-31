@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v5
+      - uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Set up Go
         uses: actions/setup-go@v6
@@ -15,37 +16,15 @@ jobs:
           go-version: "^1.25.0"
       - run: go version
 
+      - name: Generate
+        run: make generate
+
       - name: Build
-        run: make build-ec2
+        run: make build
 
       - name: Test
         run: make test
 
-      - name: Prepare SSH key
-        run: |
-          echo "${{ secrets.PRIV_KEY }}" > key.pem
-          chmod 600 key.pem
-
-      # - name: Deploy on EC2
-      #   run: |
-      #     ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_DNS }} << 'EOF'
-      #     export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #
-      #     sudo systemctl restart caddy
-      #
-      #     # Restart your Go service (or run directly if no systemd yet)
-      #     pkill main || true
-      #     nohup ./main > server.log 2>&1 &
-      #     EOF
-
-      - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@main
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-rlgoDzvc -i --delete"
-          REMOTE_HOST: ${{ secrets.EC2_DNS }}
-          REMOTE_USER: ubuntu
-          TARGET: "app/"
-          EXCLUDE: "/dist/, /node_modules/, /internal/, .air.toml, /iac/"
-          SCRIPT_AFTER_REQUIRED:
+      - name: Deploy to FlyIO
+        run: fly deploy
+        env: FLY_API_TOKEN=${{ secrets.FLY_API_TOKEN }}

@@ -1,8 +1,9 @@
-+++
-date = '2025-09-14T20:30:05+10:00'
-draft = true
-title = 'The Wav File Format'
-+++
+---
+date: 2025/09/14
+draft: false
+title: "The Wav File Format"
+description: 
+---
 #### *A deep dive into wav files used in Broadcast applications*
 
 As audio professionals we make, delete, edit, crush, fix and split wav files every day. But have you ever really looked into a wav file and why it works the way that it does? Let's examine a bit of the underlying low level implementation of the standard. 

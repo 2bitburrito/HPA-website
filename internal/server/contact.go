@@ -29,9 +29,9 @@ func (s *Server) HandleContactForm(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`<span class="error">Sorry, something went wrong. Please try again later.</span>`))
+		w.Write([]byte(`<span class="error">Sorry, something went wrong. Please try again later or send an email directly.</span>`))
 		return
 	}
 	w.WriteHeader(http.StatusPermanentRedirect)
-	w.Write([]byte(`<span class="success">✅ Message sent! We'll get back to you soon.</span>`))
+	w.Write([]byte(`<span class="success">Message sent! We'll get back to you soon.</span>`))
 }

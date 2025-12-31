@@ -14,14 +14,16 @@ import (
 
 type Server struct {
 	port         int
+	isDev        bool
 	Dependencies setup.Dependencies
-	Blogs        []Blog
 }
 
 func NewServer(params setup.Dependencies) *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
+	isDev := os.Getenv("IS_DEV")
 	NewServer := &Server{
 		port:         port,
+		isDev:        isDev == "true",
 		Dependencies: params,
 	}
 

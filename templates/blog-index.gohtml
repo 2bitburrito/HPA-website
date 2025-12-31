@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Hugh Palmer" />
+  <meta name="author" content="Hugh Palmer" />
+  <title>Hugh Palmer Blog</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap" rel="stylesheet" />
+  <link rel="icon" href="../icons/mixer1.png" type="image/x-icon" />
+  <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js"
+    integrity="sha384-ZBXiYtYQ6hJ2Y0ZNoYuI+Nq5MqWBr+chMrS/RkXpNzQCApHEhOt2aY8EJgqwHLkJ"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <nav id="mainNavbar">
+    <div class="logo" id="logo">
+      <a href="Home.html">Hugh Palmer<span class="spin"> \ </span>Audio<span class="quote">"Sounds
+          Rolling"</span></a>
+    </div>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul>
+      <li>
+        <a href="#">Home</a>
+      </li>
+      <li>
+        <a href="/blog/">Blog</a>
+      </li>
+      <li>
+        <a href="#aboutme">About</a>
+      </li>
+      <li>
+        <a href="#contact-form">Contact</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Blog Index -->
+  <section id="blog-index">
+    <h2>Some of my thoughts...</h2>
+    <div class="blog-list">
+    {{if Blogs}}
+    {{range Blogs}}
+    <div class="blog-entry">
+      <h3>{{.Name}}</h3>
+      <p>{{.Description}}</p>
+      <a href="{{.FileName}}">Read More</a>
+    </div>
+    {{else}}
+      <p>No Blogs Found!</p>
+    {{end}}
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="socials">
+      <a href="https://www.linkedin.com/in/hugh-palmer-0a8139a5/" target="_blank" rel="noopener noreferrer">
+        <img src="../Images/LinkedIN_white.png" alt="LinkedIn" width="30" height="30">
+      </a>
+      <a href="https://www.instagram.com/hughpalmerproduction/" target="_blank" rel="noopener noreferrer">
+        <img src="../Images/Instagram_white.png" alt="Instagram" width="30" height="30">
+      </a>
+      <a href="https://github.com/2bitburrito" target="_blank" rel="noopener noreferrer">
+        <img src="../Images/Github_white.png" alt="Github" width="30" height="30">
+      </a>
+    </div>
+    <p>
+      Made by me &copy; 2026 Hugh Palmer Audio - Melbourne Sound Recordist. All rights
+      reserved.
+    </p>
+  </footer>
+  <script src="../../index.js"></script>
+</body>
+
+</html>

@@ -1,11 +1,12 @@
-# Simple Makefile for a Go project
+# Simple Makefile for Go Blog
 
-# Build the application
 all: build test
+
+generate:
+	@go run cmd/generate/main.go
 
 build:
 	@echo "Building..."
-	
 	
 	@go build -o main cmd/server/main.go
 

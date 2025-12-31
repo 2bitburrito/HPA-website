@@ -55,7 +55,7 @@
         <strong>PASSIONATE SOFTWARE DEVELOPER based in Melbourne Australia</strong>
         <br />
         <br />
-        I make things and fix problems.
+        I love understaning how things work, making things and fixing problems.
       </p>
     </div>
   </section>
@@ -64,15 +64,21 @@
   <section id="blog-index">
     <h2>Some of my thoughts...</h2>
     <div class="blog-list">
+      {{if .Blogs}}
       {{range .Blogs}}
       <div class="blog-entry">
         <h3>{{.Name}}</h3>
         <p>{{.Description}}</p>
-        <a href="{{.URL}}">Read More</a>
+        <a href="{{.FileName}}">Read More</a>
       </div>
       {{end}}
-      </div>
+      {{else}}
+      <p>No Blogs Found!</p>
+      {{end}}
+    </div>
   </section>
+
+  <!-- External Links Section -->
   <section>
     <div id="external-links">
       <h2>Stuff I Make</h2>
@@ -142,7 +148,7 @@
       </a>
     </div>
     <p>
-      Made by me &copy; 2024 Hugh Palmer Audio - Melbourne Sound Recordist. All rights
+      Made by me &copy; 2026 Hugh Palmer Audio - Melbourne Sound Recordist. All rights
       reserved.
     </p>
   </footer>

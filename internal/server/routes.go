@@ -3,18 +3,20 @@ package server
 
 import (
 	"encoding/json"
-	"html/template"
 	"log"
 	"net/http"
-	"os"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
 	mux := http.NewServeMux()
 
-	// Register routes
-	mux.HandleFunc("/main/", s.HandleMain)
-	mux.Handle("/blog/", http.StripPrefix("/blog/", http.FileServer(http.Dir("./static/blog/public/"))))
+	// Main page:
+	mux.Handle("/main/", http.StripPrefix("/main/", http.FileServer(http.Dir("./static/main/"))))
+
+	// Blog Index:
+	mux.Handle("/blog/", http.StripPrefix("/blog/", http.FileServer(http.Dir("./static/generated-files/blog/"))))
+
+	mux.HandleFunc("/blog/{name}/", s.HandleServeBlog)
 
 	mux.HandleFunc("/api/contact/", s.HandleContactForm)
 
@@ -60,23 +62,5 @@ func (s *Server) HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if _, err := w.Write(jsonResp); err != nil {
 		log.Printf("Failed to write response: %v", err)
-	}
-}
-
-func (s *Server) HandleMain(w http.ResponseWriter, r *http.Request) {
-	b, err := os.ReadFile("./static/main/index.tmpl")
-	if err != nil {
-		http.Error(w, "Failed to read file", http.StatusInternalServerError)
-		return
-	}
-	tmpl, err := template.New("main").Parse(string(b))
-	if err != nil {
-		http.Error(w, "Failed to parse template", http.StatusInternalServerError)
-		return
-	}
-	err = tmpl.Execute(w, nil)
-	if err != nil {
-		http.Error(w, "Failed to execute template", http.StatusInternalServerError)
-		return
 	}
 }
