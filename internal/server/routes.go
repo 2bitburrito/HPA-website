@@ -14,7 +14,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	mux.Handle("/main/", http.StripPrefix("/main/", http.FileServer(http.Dir("./static/main/"))))
 
 	// Blog Index:
-	mux.Handle("/blog/", http.StripPrefix("/blog/", http.FileServer(http.Dir("./static/generated-files/blog/"))))
+	mux.Handle("/blog/", http.StripPrefix("/blog/", http.FileServer(http.Dir("./static/blog/"))))
 
 	mux.HandleFunc("/blog/{name}/", s.HandleServeBlog)
 

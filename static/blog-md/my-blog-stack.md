@@ -1,5 +1,5 @@
 ---
-date: 2025/12/30
+date: 2025-12-30
 draft: true
 title: "My Blog Tech Stack"
 description: "How I arrived at the stack for this blog"

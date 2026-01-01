@@ -63,19 +63,7 @@
   <!-- Blog Index -->
   <section id="blog-index">
     <h2>Some of my thoughts...</h2>
-    <div class="blog-list">
-      {{if .Blogs}}
-      {{range .Blogs}}
-      <div class="blog-entry">
-        <h3>{{.Name}}</h3>
-        <p>{{.Description}}</p>
-        <a href="{{.FileName}}">Read More</a>
-      </div>
-      {{end}}
-      {{else}}
-      <p>No Blogs Found!</p>
-      {{end}}
-    </div>
+    <div hx-get="/lib/blog-list-preview.html" hx-trigger="load"></div>
   </section>
 
   <!-- External Links Section -->

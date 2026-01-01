@@ -38,9 +38,12 @@ func main() {
 		panic(err)
 	}
 
-	blogs := t.GenerateBlogFiles(fls)
+	blogs, err := t.GenerateBlogFiles(fls)
+	if err != nil {
+		panic(err)
+	}
 
-	err = formatMainHTML(blogs)
+	err = formatBlogIndexSnippet(blogs)
 	if err != nil {
 		panic(err)
 	}
@@ -54,11 +57,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("Website Generated Successfully")
 }
 
-func (t *templator) GenerateBlogFiles(files []os.DirEntry) blog.Blogs {
+func (t *templator) GenerateBlogFiles(files []os.DirEntry) (blog.Blogs, error) {
 	blogs := blog.NewBlogs()
 
+	var buf bytes.Buffer
 	for _, f := range files {
 		if f.IsDir() || !strings.HasSuffix(f.Name(), ".md") {
 			continue
@@ -66,46 +71,34 @@ func (t *templator) GenerateBlogFiles(files []os.DirEntry) blog.Blogs {
 
 		mdn, err := os.ReadFile(BlogPath + f.Name())
 		if err != nil {
-			fmt.Printf("failed to read file: %s\n%v\n", f.Name(), err)
-			continue
+			return blog.Blogs{}, fmt.Errorf("failed to read file: %s\n%v", f.Name(), err)
 		}
 
-		var buf bytes.Buffer
+		buf.Reset()
 
 		ctx := parser.NewContext()
 		err = t.mdRenderer.Convert(mdn, &buf, parser.WithContext(ctx))
 		if err != nil {
-			fmt.Printf("failed to convert file: %s\n%v\n", f.Name(), err)
+			return blog.Blogs{}, fmt.Errorf("failed to convert file: %s\n%v", f.Name(), err)
 		}
 
 		data := meta.Get(ctx)
-		err = blogs.New(data, f.Name())
+		err = blogs.AddNew(data, f.Name(), buf)
 		if err != nil {
-			fmt.Printf("failed to create blog: %s\n%v\n", f.Name(), err)
+			return blog.Blogs{}, fmt.Errorf("failed to create blog: %s\n%v", f.Name(), err)
 		}
 	}
-	return blogs
+	return *blogs, nil
 }
 
 func writeHTMLArticleFiles(blogs blog.Blogs) error {
-	tmpB, err := os.ReadFile("./templates/article.gohtml")
+	tmpl, err := template.ParseFiles(TemplatesDirectory + "article.gohtml")
 	if err != nil {
-		return fmt.Errorf("failed to read article.gohtml file: %w", err)
+		return fmt.Errorf("failed to parse article template %w", err)
 	}
-	tmpl, err := template.New("article").Parse(string(tmpB))
-	if err != nil {
-		return fmt.Errorf("failed to parse main template %w", err)
-	}
-	for _, b := range blogs {
-		// First format them with the template
-		var fileBuf bytes.Buffer
-		err = tmpl.Execute(&fileBuf, b)
-		if err != nil {
-			return fmt.Errorf("failed to execute template for %s: %w", b.FileName, err)
-		}
 
-		// Then write them to the file
-		err := os.WriteFile(b.Filepath, b.HTMLContent.Bytes(), 0o644)
+	for _, b := range blogs {
+		err = renderAndSave(tmpl, b, b.Filepath)
 		if err != nil {
 			return err
 		}
@@ -114,47 +107,37 @@ func writeHTMLArticleFiles(blogs blog.Blogs) error {
 }
 
 // Formats the main file and the blog index with the data
-func formatMainHTML(blogs blog.Blogs) error {
-	mainFle, err := os.ReadFile("./templates/main.gohtml")
+func formatBlogIndexSnippet(blogs blog.Blogs) error {
+	tmpl, err := template.ParseFiles(TemplatesDirectory + "snippets/blog_list.html")
 	if err != nil {
-		return fmt.Errorf("failed to read main.gohtml file: %w", err)
+		return fmt.Errorf("failed to parse blog_list.html template: %w", err)
 	}
 
-	mainTmpl, err := template.New("main").Parse(string(mainFle))
+	// Render the first 5 articles for main page
+	err = renderAndSave(tmpl, blogs.Limit(5), helpers.OutDir+"lib/blog_list_preview.html")
 	if err != nil {
-		return fmt.Errorf("failed to parse main template %w", err)
+		return err
 	}
 
-	var fileBuf bytes.Buffer
+	// Render all of the articles for the blog index
+	err = renderAndSave(tmpl, blogs, helpers.OutDir+"lib/blog_list.html")
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
-	// Create, and save the main page
-	err = mainTmpl.Execute(&fileBuf, blogs)
+func renderAndSave(tmpl *template.Template, data any, filepath string) error {
+	var buf bytes.Buffer
+
+	err := tmpl.Execute(&buf, data)
 	if err != nil {
 		return fmt.Errorf("failed to execute template: %w", err)
 	}
-	err = os.WriteFile(helpers.OutDir+"/main/index.html", fileBuf.Bytes(), 0o644)
-	if err != nil {
-		return fmt.Errorf("failed to write main file: %w", err)
-	}
-	idxFle, err := os.ReadFile("./templates/blog-index.gohtml")
-	if err != nil {
-		return fmt.Errorf("failed to read main.gohtml file: %w", err)
-	}
 
-	// Create and save the blog index
-	// TODO: Figure out how to just embed the index into the main page and not have to redo this twice...
-	idxTmpl, err := template.New("blog-index").Parse(string(idxFle))
+	err = os.WriteFile(filepath, buf.Bytes(), 0o644)
 	if err != nil {
-		return fmt.Errorf("failed to parse main template %w", err)
+		return fmt.Errorf("failed to write file: %w", err)
 	}
-	err = idxTmpl.Execute(&fileBuf, blogs)
-	if err != nil {
-		return fmt.Errorf("failed to execute template: %w", err)
-	}
-	err = os.WriteFile(helpers.OutDir+"/blog/index.html", fileBuf.Bytes(), 0o644)
-	if err != nil {
-		return fmt.Errorf("failed to write main file: %w", err)
-	}
-
 	return nil
 }

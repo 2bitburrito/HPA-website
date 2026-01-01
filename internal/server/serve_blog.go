@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -17,5 +18,6 @@ func (s *Server) HandleServeBlog(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./static/404.html")
 		return
 	}
+	fmt.Println("serving: ", blog.Filepath)
 	http.ServeFile(w, r, blog.Filepath)
 }

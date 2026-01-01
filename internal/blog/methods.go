@@ -4,14 +4,18 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"os"
+	"slices"
 	"strings"
+	"time"
 
 	"github.com/2bitburrito/hpa-website/internal/helpers"
 )
 
-func NewBlogs() Blogs {
-	return make(Blogs)
+func NewBlogs() *Blogs {
+	b := make(Blogs, 0)
+	return &b
 }
 
 // WriteBlogDataToJSON writes to json file for runtime information
@@ -43,12 +47,16 @@ func ReadBlogData() (Blogs, error) {
 }
 
 func (b Blogs) Get(name string) (Blog, bool) {
-	blog, ok := b[name]
-	return blog, ok
+	for _, blg := range b {
+		if blg.FileName == name {
+			return blg, true
+		}
+	}
+	return Blog{}, false
 }
 
-// New creates a new blog from the data and adds it to the Blogs map
-func (b Blogs) New(data map[string]interface{}, fileName string) error {
+// AddNew creates a new blog from the data and adds it to the Blogs slice
+func (b *Blogs) AddNew(data map[string]any, fileName string, htmlContent bytes.Buffer) error {
 	name, ok := strings.CutSuffix(fileName, ".md")
 	if !ok {
 		return fmt.Errorf("couldn't cut %q from file: %s", ".md", fileName)
@@ -58,9 +66,13 @@ func (b Blogs) New(data map[string]interface{}, fileName string) error {
 	if !ok {
 		return fmt.Errorf("blog missing required field: title")
 	}
-	date, ok := data["date"].(string)
+	dateStr, ok := data["date"].(string)
 	if !ok {
-		date = ""
+		return fmt.Errorf("blog missing required field: date")
+	}
+	date, err := time.Parse(time.DateOnly, dateStr)
+	if err != nil {
+		return fmt.Errorf("blog %s couldn't parse date: %w ", name, err)
 	}
 	description, ok := data["description"].(string)
 	if !ok {
@@ -75,13 +87,30 @@ func (b Blogs) New(data map[string]interface{}, fileName string) error {
 		Title:       title,
 		Description: description,
 		Date:        date,
-		HTMLContent: bytes.Buffer{},
+		HTMLContent: template.HTML(htmlContent.String()),
 		IsDraft:     isDraft,
-		Filepath:    fmt.Sprintf("%s/blog/articles/%s.html", helpers.OutDir, name),
+		Filepath:    fmt.Sprintf("%sblog/articles/%s.html", helpers.OutDir, name),
 		FileName:    name,
 	}
 
-	b[name] = blg
+	*b = append(*b, blg)
+	b.sort()
 
 	return nil
+}
+
+func (b Blogs) sort() {
+	slices.SortFunc(b, func(a, b Blog) int {
+		if a.Date.After(b.Date) {
+			return -1
+		}
+		return 1
+	})
+}
+
+func (b Blogs) Limit(n int) Blogs {
+	if n > len(b) {
+		return b
+	}
+	return b[:n]
 }

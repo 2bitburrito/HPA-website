@@ -1,0 +1,15 @@
+<div class="blog-list">
+  {{if .}}
+  <ul>
+    {{range .}}
+    <li class="blog-list-entry">
+      <p>{{.Title}}</p>
+      <p>{{.Description}}</p>
+      <a href="/blog/{{.FileName}}">Read More</a>
+    </li>
+  </ul>
+  {{end}}
+  {{else}}
+  <p>No Blog Articles Found!</p>
+  {{end}}
+</div>
