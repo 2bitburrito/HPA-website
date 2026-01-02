@@ -19,4 +19,4 @@ j
 - [example blog](https://bits.logic.inc/p/ai-is-forcing-us-to-write-good-code)
 - subscriptions?
 - I like to write code... So let me write the code
-- 
+- Would I do it like this again?

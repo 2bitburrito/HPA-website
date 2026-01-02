@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{.Head}}
+
+<body>
+  {{.NavBar}}
+
+  <!-- Article Section -->
+  <section class="article">
+    <h2>{{.Title}}</h2>
+    <h3>{{.Description}}</h3>
+    <p>{{.Date}}</p>
+    <div class="article-content">
+      {{.HTMLContent}}
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  {{.Footer}}
+  <script src="../../index.js"></script>
+</body>
+
+</html>

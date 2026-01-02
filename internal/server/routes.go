@@ -3,6 +3,7 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -15,6 +16,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	// Blog Index:
 	mux.Handle("/blog/", http.StripPrefix("/blog/", http.FileServer(http.Dir("./static/blog/"))))
+
+	// HTMX Snippets:
+	mux.Handle("/lib/", http.StripPrefix("/lib/", http.FileServer(http.Dir("./static/lib/"))))
 
 	mux.HandleFunc("/blog/{name}/", s.HandleServeBlog)
 
@@ -35,6 +39,7 @@ func (s *Server) corsMiddleware(next http.Handler) http.Handler {
 		w.Header().Set("Access-Control-Allow-Headers", "Accept, Authorization, Content-Type, X-CSRF-Token")
 		w.Header().Set("Access-Control-Allow-Credentials", "false") // Set to "true" if credentials are required
 
+		fmt.Println("received request: ", r.URL)
 		// Handle preflight OPTIONS requests
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusNoContent)

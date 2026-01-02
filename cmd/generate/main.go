@@ -9,7 +9,6 @@ import (
 
 	"github.com/2bitburrito/hpa-website/internal/blog"
 	"github.com/2bitburrito/hpa-website/internal/helpers"
-	"github.com/yuin/goldmark"
 	meta "github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/parser"
 )
@@ -19,48 +18,53 @@ const (
 	BlogPath           = "./static/blog-md/"
 )
 
-type templator struct {
-	mdRenderer goldmark.Markdown
+type RenderData struct {
+	HTMLScaffold HTMLScaffold
+	Blog         blog.Blog
 }
 
 func main() {
 	fmt.Println("Building Website...")
-	t := templator{
-		mdRenderer: goldmark.New(
-			goldmark.WithExtensions(
-				meta.Meta,
-			),
-		),
-	}
 
-	fls, err := os.ReadDir(BlogPath)
+	t, err := newTemplator()
 	if err != nil {
 		panic(err)
 	}
 
-	blogs, err := t.GenerateBlogFiles(fls)
+	err = scaffoldHTML()
 	if err != nil {
 		panic(err)
 	}
 
-	err = formatBlogIndexSnippet(blogs)
+	err := t.GenerateBlogFiles()
 	if err != nil {
 		panic(err)
 	}
 
-	err = writeHTMLArticleFiles(blogs)
+	err = t.writeHTMLArticleFiles()
 	if err != nil {
 		panic(err)
 	}
 
-	err = blog.WriteBlogDataToJSON(blogs)
+	err = blog.WriteBlogDataToJSON(t.Blogs)
 	if err != nil {
 		panic(err)
 	}
+
+	err = t.formatBlogIndexSnippets()
+	if err != nil {
+		panic(err)
+	}
+
 	fmt.Println("Website Generated Successfully")
 }
 
-func (t *templator) GenerateBlogFiles(files []os.DirEntry) (blog.Blogs, error) {
+func (t *templator) GenerateBlogFiles() error {
+	files, err := os.ReadDir(BlogPath)
+	if err != nil {
+		return fmt.Errorf("failed to read blog directory: %w", err)
+	}
+
 	blogs := blog.NewBlogs()
 
 	var buf bytes.Buffer
@@ -71,7 +75,7 @@ func (t *templator) GenerateBlogFiles(files []os.DirEntry) (blog.Blogs, error) {
 
 		mdn, err := os.ReadFile(BlogPath + f.Name())
 		if err != nil {
-			return blog.Blogs{}, fmt.Errorf("failed to read file: %s\n%v", f.Name(), err)
+			return fmt.Errorf("failed to read file: %s\n%v", f.Name(), err)
 		}
 
 		buf.Reset()
@@ -79,26 +83,31 @@ func (t *templator) GenerateBlogFiles(files []os.DirEntry) (blog.Blogs, error) {
 		ctx := parser.NewContext()
 		err = t.mdRenderer.Convert(mdn, &buf, parser.WithContext(ctx))
 		if err != nil {
-			return blog.Blogs{}, fmt.Errorf("failed to convert file: %s\n%v", f.Name(), err)
+			return fmt.Errorf("failed to convert file: %s\n%v", f.Name(), err)
 		}
 
 		data := meta.Get(ctx)
 		err = blogs.AddNew(data, f.Name(), buf)
 		if err != nil {
-			return blog.Blogs{}, fmt.Errorf("failed to create blog: %s\n%v", f.Name(), err)
+			return fmt.Errorf("failed to create blog: %s\n%v", f.Name(), err)
 		}
 	}
-	return *blogs, nil
+	t.Blogs = *blogs
+	return nil
 }
 
-func writeHTMLArticleFiles(blogs blog.Blogs) error {
-	tmpl, err := template.ParseFiles(TemplatesDirectory + "article.gohtml")
+func (t *templator) writeHTMLArticleFiles() error {
+	tmpl, err := template.ParseFiles(TemplatesDirectory + "article.html")
 	if err != nil {
 		return fmt.Errorf("failed to parse article template %w", err)
 	}
 
-	for _, b := range blogs {
-		err = renderAndSave(tmpl, b, b.Filepath)
+	for _, b := range t.Blogs {
+		r := RenderData{
+			HTMLScaffold: t.scaffold,
+			Blog:         b,
+		}
+		err = renderAndSave(tmpl, r, b.Filepath)
 		if err != nil {
 			return err
 		}
@@ -107,20 +116,20 @@ func writeHTMLArticleFiles(blogs blog.Blogs) error {
 }
 
 // Formats the main file and the blog index with the data
-func formatBlogIndexSnippet(blogs blog.Blogs) error {
+func (t *templator) formatBlogIndexSnippets() error {
 	tmpl, err := template.ParseFiles(TemplatesDirectory + "snippets/blog_list.html")
 	if err != nil {
 		return fmt.Errorf("failed to parse blog_list.html template: %w", err)
 	}
 
 	// Render the first 5 articles for main page
-	err = renderAndSave(tmpl, blogs.Limit(5), helpers.OutDir+"lib/blog_list_preview.html")
+	err = renderAndSave(tmpl, t.Blogs.Limit(5), helpers.OutDir+"lib/blog_list_preview.html")
 	if err != nil {
 		return err
 	}
 
 	// Render all of the articles for the blog index
-	err = renderAndSave(tmpl, blogs, helpers.OutDir+"lib/blog_list.html")
+	err = renderAndSave(tmpl, t.Blogs, helpers.OutDir+"lib/blog_list.html")
 	if err != nil {
 		return err
 	}
@@ -139,5 +148,21 @@ func renderAndSave(tmpl *template.Template, data any, filepath string) error {
 	if err != nil {
 		return fmt.Errorf("failed to write file: %w", err)
 	}
+	return nil
+}
+
+func scaffoldHTML() error {
+	tmpl, err := template.ParseFiles(
+		TemplatesDirectory+"main.html",
+		TemplatesDirectory+"blog-index.html",
+		TemplatesDirectory+"article.html",
+		// TemplatesDirectory+"snippets/head.html",
+		// TemplatesDirectory+"snippets/foot.html",
+		// TemplatesDirectory+"snippets/nav_bar.html",
+	)
+	if err != nil {
+		return fmt.Errorf("failed to parse main|snippet templates: %w", err)
+	}
+
 	return nil
 }

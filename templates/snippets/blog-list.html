@@ -3,13 +3,13 @@
   <ul>
     {{range .}}
     <li class="blog-list-entry">
-      <p>{{.Title}}</p>
-      <p>{{.Description}}</p>
+      <div>{{.Title}}</div>
+      <div>{{.Description}}</div>
       <a href="/blog/{{.FileName}}">Read More</a>
     </li>
+    {{end}}
   </ul>
-  {{end}}
   {{else}}
-  <p>No Blog Articles Found!</p>
+  <div>No Blog Articles Found!</div>
   {{end}}
 </div>

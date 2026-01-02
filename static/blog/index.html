@@ -44,29 +44,13 @@
     </ul>
   </nav>
 
-  
+  <!-- Blog Index -->
   <section id="blog-index">
-    <h2>All of my thoughts...</h2>
-    <div class="blog-list">
-      
-      
-      <div class="blog-entry">
-        <h3>My Blog Tech Stack</h3>
-        <p>How I arrived at the stack for this blog</p>
-        <a href="my-blog-stack">Read More</a>
-      </div>
-      
-      <div class="blog-entry">
-        <h3>The Wav File Format</h3>
-        <p></p>
-        <a href="wav-file-format">Read More</a>
-      </div>
-      
-      
-    </div>
+    <h2 style="margin-top: 100px;">All of my thoughts...</h2>
+    <div hx-get="/lib/blog_list.html" hx-trigger="load"></div>
   </section>
 
-  
+  <!-- Footer Section -->
   <footer>
     <div class="socials">
       <a href="https://www.linkedin.com/in/hugh-palmer-0a8139a5/" target="_blank" rel="noopener noreferrer">
