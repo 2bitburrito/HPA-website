@@ -7,18 +7,18 @@
   {{.NavBar}}
 
   <!-- Article Section -->
-  <section class="article">
-    <h2>{{.Title}}</h2>
-    <h3>{{.Description}}</h3>
-    <p>{{.Date}}</p>
+  <section style="margin-top: 100px;" class="article">
+    <h2 class="article-title">{{.Title}}</h2>
+    <h3 class="article-description">{{.Description}}</h3>
     <div class="article-content">
       {{.HTMLContent}}
     </div>
+    <p class="author-date">[ Hugh Palmer ] - {{.Date.Format "2006/01/02"}}</p>
   </section>
 
   <!-- Footer Section -->
   {{.Footer}}
-  <script src="../../index.js"></script>
+  <script src="/index.js"></script>
 </body>
 
 </html>

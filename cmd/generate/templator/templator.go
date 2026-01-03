@@ -10,15 +10,25 @@ import (
 	"github.com/2bitburrito/hpa-website/internal/blog"
 	"github.com/2bitburrito/hpa-website/internal/helpers"
 	"github.com/yuin/goldmark"
+	highlighting "github.com/yuin/goldmark-highlighting/v2"
 	meta "github.com/yuin/goldmark-meta"
+	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
+	"github.com/yuin/goldmark/renderer/html"
 )
 
 func New() (*templator, error) {
 	t := templator{
 		mdRenderer: goldmark.New(
+			goldmark.WithRendererOptions(
+				html.WithUnsafe(),
+			),
 			goldmark.WithExtensions(
 				meta.Meta,
+				extension.GFM,
+				highlighting.NewHighlighting(
+					highlighting.WithStyle("dracula"),
+				),
 			),
 		),
 	}
