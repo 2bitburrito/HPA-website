@@ -9,6 +9,7 @@ import (
 
 	"github.com/2bitburrito/hpa-website/internal/blog"
 	"github.com/2bitburrito/hpa-website/internal/helpers"
+	"github.com/2bitburrito/hpa-website/internal/server"
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting/v2"
 	meta "github.com/yuin/goldmark-meta"
@@ -19,6 +20,7 @@ import (
 
 func New() (*templator, error) {
 	t := templator{
+		isDev: server.IsDev(),
 		mdRenderer: goldmark.New(
 			goldmark.WithRendererOptions(
 				html.WithUnsafe(),
@@ -162,7 +164,7 @@ func (t *templator) formatBlogIndexSnippets() error {
 	var buf bytes.Buffer
 
 	// Render the first 5 articles for main page:
-	err = tmpl.Execute(&buf, t.Blogs.Limit(5))
+	err = tmpl.Execute(&buf, t.Blogs.GetNum(5, t.isDev))
 	if err != nil {
 		return fmt.Errorf("failed to execute template blog-list.html: %w", err)
 	}
@@ -172,7 +174,7 @@ func (t *templator) formatBlogIndexSnippets() error {
 	buf.Reset()
 
 	// Render all of the articles for the blog index:
-	err = tmpl.Execute(&buf, t.Blogs)
+	err = tmpl.Execute(&buf, t.Blogs.GetNum(30, t.isDev))
 	if err != nil {
 		return fmt.Errorf("failed to execute template blog-list.html: %w", err)
 	}

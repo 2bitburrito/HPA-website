@@ -23,29 +23,31 @@
 
 <body>
   <nav id="mainNavbar">
-  <div class="logo" id="logo">
-    <a href="/">Hugh Palmer<span class="spin"> \ </span>Audio<span class="quote">"Sounds
-        Rolling"</span></a>
+  <div class="nav-container">
+    <div class="logo" id="logo">
+      <a href="/">Hugh Palmer<span class="spin"> \ </span>Audio<span class="quote">"Sounds
+          Rolling"</span></a>
+    </div>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/blog/">Blog</a>
+      </li>
+      <li>
+        <a href="/main/#aboutme">About</a>
+      </li>
+      <li>
+        <a href="/main/#contact-form">Contact</a>
+      </li>
+    </ul>
   </div>
-  <div class="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-  <ul>
-    <li>
-      <a href="/">Home</a>
-    </li>
-    <li>
-      <a href="/blog/">Blog</a>
-    </li>
-    <li>
-      <a href="/main/#aboutme">About</a>
-    </li>
-    <li>
-      <a href="/main/#contact-form">Contact</a>
-    </li>
-  </ul>
 </nav>
 
 
@@ -119,7 +121,7 @@ I will lay out a very basic structure of a riff file. RF64 is laid out quite dif
   <img src="/Images/hex-fiend.png" alt="Hex Fiend">
   <figcaption>A screenshot of the Hex Fiend hex editor</figcaption>
 </figure>
-<p>On the left you can see the data represented in text as hexadecimal (a base 16 digit) which is in essence an easier way for developers to view binary as each hexadecimal represents 4 bits - making it more compact that raw binary. On the right the program is translating this hex into ascii digits for us to read.  The beauty of this is that you can actually see the seperate chunks and headers - along with the padding in the file which allows for some flexibility in the size of the bext and ixml chunks.</p>
+<p>On the left you can see the data represented in text as hexadecimal (a base 16 digit) which is in essence an easier way for developers to view binary as each hexadecimal represents 8 bits - making it more compact that raw binary and easier to reason about. On the right the program is translating this hex into ascii digits for us to read.  The beauty of this is that you can actually see the seperate chunks and headers - along with the padding in the file which allows for some flexibility in the size of the bext and ixml chunks.</p>
 <h3>RF64</h3>
 <p>As mentioned previously the RF64 format was developed in order to overcome the hard 4Gb limit imposed by RIFF files. This was caused by the 32bit addressing of a RIFF file in which it stores its file size. Essentially we can store <code>2&lt;sup&gt;32&lt;/sup&gt; = 4,294,967,296</code> values in a 32bit integer which is roughly 4Gb. If a RIFF file was to store a size larger than that in the <code>riff</code> chunk we'd get what's known as buffer overflow and the format breaks.</p>
 <p>RF64 solves this by storing values in 64bit integers, essentially squaring our file size limit: <code>2&lt;sup&gt;64&lt;/sup&gt; = 1.8446744074e19</code>.</p>
@@ -134,7 +136,7 @@ I will lay out a very basic structure of a riff file. RF64 is laid out quite dif
 </ul>
 
     </div>
-    <p class="author-date">[ Hugh Palmer ] - 2025/09/14</p>
+    <p class="author-date">[ Hugh Palmer ] - 2025/02/14</p>
   </section>
 
   

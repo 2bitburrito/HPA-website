@@ -20,10 +20,9 @@ type Server struct {
 
 func NewServer(params setup.Dependencies) *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
-	isDev := os.Getenv("IS_DEV")
 	NewServer := &Server{
 		port:         port,
-		isDev:        isDev == "true",
+		isDev:        IsDev(),
 		Dependencies: params,
 	}
 

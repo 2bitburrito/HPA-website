@@ -19,6 +19,7 @@ type RenderData struct {
 }
 
 type templator struct {
+	isDev      bool
 	mdRenderer goldmark.Markdown
 	scaffold   HTMLScaffold
 	Blogs      blog.Blogs
@@ -30,10 +31,4 @@ type HTMLScaffold struct {
 	NavBar          template.HTML
 	BlogListPreview template.HTML
 	BlogList        template.HTML
-}
-
-var htmlPaths = []string{
-	TemplatesDirectory + "main.html",
-	TemplatesDirectory + "blog-index.html",
-	TemplatesDirectory + "article.html",
 }

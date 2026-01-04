@@ -8,7 +8,9 @@ import (
 func (s *Server) HandleServeBlog(w http.ResponseWriter, r *http.Request) {
 	name := r.PathValue("name")
 
-	blog, exists := s.Dependencies.Blogs.Get(name)
+	fmt.Println("serving: ", name)
+
+	blog, exists := s.Dependencies.Blogs.Get(name, s.isDev)
 	if !exists {
 		http.ServeFile(w, r, "./static/404.html")
 		return
@@ -18,6 +20,5 @@ func (s *Server) HandleServeBlog(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./static/404.html")
 		return
 	}
-	fmt.Println("serving: ", blog.Filepath)
 	http.ServeFile(w, r, blog.Filepath)
 }

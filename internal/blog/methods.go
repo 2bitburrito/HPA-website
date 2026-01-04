@@ -20,7 +20,19 @@ func NewBlogs() *Blogs {
 
 // WriteBlogDataToJSON writes to json file for runtime information
 func WriteBlogDataToJSON(blogs Blogs) error {
-	dat, err := json.Marshal(blogs)
+	// print evertyhing except the HTMLContent
+	strippedBlogs := make([]BaseBlog, len(blogs))
+	for _, blg := range blogs {
+		strippedBlogs = append(strippedBlogs, BaseBlog{
+			Title:       blg.Title,
+			Description: blg.Description,
+			Date:        blg.Date,
+			IsDraft:     blg.IsDraft,
+			Filepath:    blg.Filepath,
+			FileName:    blg.FileName,
+		})
+	}
+	dat, err := json.Marshal(strippedBlogs)
 	if err != nil {
 		return err
 	}
@@ -46,13 +58,34 @@ func ReadBlogData() (Blogs, error) {
 	return bgs, nil
 }
 
-func (b Blogs) Get(name string) (Blog, bool) {
+func (b Blogs) Get(name string, isDev bool) (Blog, bool) {
 	for _, blg := range b {
 		if blg.FileName == name {
 			return blg, true
 		}
 	}
 	return Blog{}, false
+}
+
+func (b Blogs) GetNum(n int, isDev bool) Blogs {
+	var blogs Blogs
+	for _, blg := range b {
+		if !blg.CanServe(isDev) {
+			continue
+		}
+		blogs = append(blogs, blg)
+	}
+
+	blogs.sort()
+
+	if n > len(blogs) {
+		return blogs
+	}
+	return blogs[:n]
+}
+
+func (bl *Blog) CanServe(isDev bool) bool {
+	return bl.IsDraft && isDev || !bl.IsDraft
 }
 
 // AddNew creates a new blog from the data and adds it to the Blogs slice
@@ -84,13 +117,15 @@ func (b *Blogs) AddNew(data map[string]any, fileName string, htmlContent bytes.B
 	}
 
 	blg := Blog{
-		Title:       title,
-		Description: description,
-		Date:        date,
+		BaseBlog: BaseBlog{
+			Title:       title,
+			Description: description,
+			Date:        date,
+			IsDraft:     isDraft,
+			Filepath:    fmt.Sprintf("%sblog/articles/%s.html", helpers.OutDir, name),
+			FileName:    name,
+		},
 		HTMLContent: template.HTML(htmlContent.String()),
-		IsDraft:     isDraft,
-		Filepath:    fmt.Sprintf("%sblog/articles/%s.html", helpers.OutDir, name),
-		FileName:    name,
 	}
 
 	*b = append(*b, blg)
@@ -106,11 +141,4 @@ func (b Blogs) sort() {
 		}
 		return 1
 	})
-}
-
-func (b Blogs) Limit(n int) Blogs {
-	if n > len(b) {
-		return b
-	}
-	return b[:n]
 }

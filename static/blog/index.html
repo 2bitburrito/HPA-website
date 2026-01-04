@@ -23,59 +23,57 @@
 
 <body>
   <nav id="mainNavbar">
-  <div class="logo" id="logo">
-    <a href="/">Hugh Palmer<span class="spin"> \ </span>Audio<span class="quote">"Sounds
-        Rolling"</span></a>
+  <div class="nav-container">
+    <div class="logo" id="logo">
+      <a href="/">Hugh Palmer<span class="spin"> \ </span>Audio<span class="quote">"Sounds
+          Rolling"</span></a>
+    </div>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/blog/">Blog</a>
+      </li>
+      <li>
+        <a href="/main/#aboutme">About</a>
+      </li>
+      <li>
+        <a href="/main/#contact-form">Contact</a>
+      </li>
+    </ul>
   </div>
-  <div class="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-  <ul>
-    <li>
-      <a href="/">Home</a>
-    </li>
-    <li>
-      <a href="/blog/">Blog</a>
-    </li>
-    <li>
-      <a href="/main/#aboutme">About</a>
-    </li>
-    <li>
-      <a href="/main/#contact-form">Contact</a>
-    </li>
-  </ul>
 </nav>
 
 
+  <div class="container">
+    
+    <section id="blog-index">
+      <h2 style="margin-top: 100px;">All of my thoughts...</h2>
+      <div class="blog-list">
   
-  <section id="blog-index">
-    <h2 style="margin-top: 100px;">All of my thoughts...</h2>
-    <div class="blog-list">
-  
-  <ul>
+  <ol>
     
     <li class="blog-list-entry">
-      <div>My Blog Tech Stack</div>
-      <div>How I arrived at the stack for this blog</div>
-      <a href="/blog/my-blog-stack">Read More</a>
+      <a href="/blog/wav-file-format">
+        <div class="blog-list-title">The Wav File Format</div>
+        <div class="blog-list-description">A deep dive into wav files used in Broadcast applications</div>
+      </a>
     </li>
     
-    <li class="blog-list-entry">
-      <div>The Wav File Format</div>
-      <div>A deep dive into wav files used in Broadcast applications</div>
-      <a href="/blog/wav-file-format">Read More</a>
-    </li>
-    
-  </ul>
+  </ol>
   
 </div>
 
-  </section>
+    </section>
 
-  
-  <footer>
+    
+    <footer>
   <div class="socials">
     <a href="https://www.linkedin.com/in/hugh-palmer-0a8139a5/" target="_blank" rel="noopener noreferrer">
       <img src="../Images/LinkedIN_white.png" alt="LinkedIn" width="30" height="30">
@@ -93,7 +91,8 @@
   </p>
 </footer>
 
-  <script src="../../index.js"></script>
+    <script src="../../index.js"></script>
+  </div>
 </body>
 
 </html>

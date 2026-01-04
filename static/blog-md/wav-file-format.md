@@ -1,5 +1,5 @@
 ---
-date: 2025-09-14
+date: 2025-02-14
 draft: false
 title: "The Wav File Format"
 description: A deep dive into wav files used in Broadcast applications
@@ -74,7 +74,7 @@ I find concepts like these all academic until I can actually see them in action 
   <figcaption>A screenshot of the Hex Fiend hex editor</figcaption>
 </figure>
 
-On the left you can see the data represented in text as hexadecimal (a base 16 digit) which is in essence an easier way for developers to view binary as each hexadecimal represents 4 bits - making it more compact that raw binary. On the right the program is translating this hex into ascii digits for us to read.  The beauty of this is that you can actually see the seperate chunks and headers - along with the padding in the file which allows for some flexibility in the size of the bext and ixml chunks.
+On the left you can see the data represented in text as hexadecimal (a base 16 digit) which is in essence an easier way for developers to view binary as each hexadecimal represents 8 bits - making it more compact that raw binary and easier to reason about. On the right the program is translating this hex into ascii digits for us to read.  The beauty of this is that you can actually see the seperate chunks and headers - along with the padding in the file which allows for some flexibility in the size of the bext and ixml chunks.
 
 ### RF64
 

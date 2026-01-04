@@ -12,6 +12,7 @@
   --color-text-muted: #999;
   --color-background: #151b29;
   --color-surface: rgba(21, 27, 41, 0.95);
+  --color-card: #172333;
   --color-border: #333;
 
   /* Typography */
@@ -173,6 +174,25 @@ nav {
   background-color: transparent;
   transition: background-color var(--transition-slow);
   z-index: var(--z-fixed);
+}
+
+nav .nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.nav-container {
+  max-width: 1100px;
+  margin: 0 auto;
   padding: 0 var(--space-6);
 }
 
@@ -236,7 +256,7 @@ nav ul {
   font-weight: 200;
   color: var(--color-text);
   text-align: center;
-  padding: var(--space-6);
+  padding-left: var(--space-6);
   display: inline-block;
   opacity: 0;
   transform: translateX(-1000px);
@@ -290,6 +310,7 @@ nav ul {
 .aboutme-content {
   display: flex;
   justify-content: space-between;
+  flex-direction: row-reverse;
   align-items: center;
   gap: var(--space-8);
 }
@@ -306,6 +327,25 @@ nav ul {
   display: block;
   box-shadow: var(--shadow-lg);
 }
+
+/* Blog Index */
+.blog-list {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+  margin: 0 auto;
+  max-width: calc(100% - calc(var(--space-24) * 2));
+  border-radius: var(--radius-sm);
+}
+
+.blog-list-entry {
+  margin-bottom: var(--space-2);
+}
+
+.blog-list-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
 
 /* Buttons */
 .btn {
@@ -387,11 +427,10 @@ nav ul {
 }
 
 .proj {
-  border-radius: var(--radius-xl);
-  width: 150px;
-  height: 150px;
+  border-radius: var(--radius-sm);
+  width: 130px;
+  height: 130px;
   padding: var(--space-4);
-  border: 1px solid var(--color-border);
   transition: all var(--transition-slow);
   position: relative;
   overflow: hidden;
@@ -740,7 +779,7 @@ footer p {
 }
 
 /* Small Mobile */
-@media (max-width: 480px) {
+@media (max-width: 500px) {
   body {
     font-size: var(--font-size-sm);
   }
@@ -761,5 +800,12 @@ footer p {
   .contact-form {
     width: 95%;
     padding: var(--space-4);
+  }
+
+  .blog-list {
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 0;
+    min-width: 100%;
   }
 }

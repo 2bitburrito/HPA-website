@@ -3,7 +3,6 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 )
@@ -11,20 +10,11 @@ import (
 func (s *Server) RegisterRoutes() http.Handler {
 	mux := http.NewServeMux()
 
-	// Main page:
-	mux.Handle("/main/", http.StripPrefix("/main/", http.FileServer(http.Dir("./static/main/"))))
-
-	// Blog Index:
-	mux.Handle("/blog/", http.StripPrefix("/blog/", http.FileServer(http.Dir("./static/blog/"))))
-
-	// HTMX Snippets:
-	mux.Handle("/lib/", http.StripPrefix("/lib/", http.FileServer(http.Dir("./static/lib/"))))
-
-	mux.HandleFunc("/blog/{name}/", s.HandleServeBlog)
-
 	mux.HandleFunc("/api/contact/", s.HandleContactForm)
-
 	mux.HandleFunc("/health", s.CheckHealth)
+
+	// Blog handler
+	mux.HandleFunc("/blog/{name}/", s.HandleServeBlog)
 
 	mux.Handle("/", http.FileServer(http.Dir("./static/")))
 	// Wrap the mux with CORS middleware
@@ -38,8 +28,6 @@ func (s *Server) corsMiddleware(next http.Handler) http.Handler {
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH")
 		w.Header().Set("Access-Control-Allow-Headers", "Accept, Authorization, Content-Type, X-CSRF-Token")
 		w.Header().Set("Access-Control-Allow-Credentials", "false") // Set to "true" if credentials are required
-
-		fmt.Println("received request: ", r.URL)
 
 		// Handle preflight OPTIONS requests
 		if r.Method == http.MethodOptions {
