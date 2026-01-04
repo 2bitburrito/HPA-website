@@ -15,7 +15,9 @@ func TestCanServe(t *testing.T) {
 		{
 			name: "draft in Dev",
 			bl: Blog{
-				IsDraft: true,
+				BaseBlog: BaseBlog{
+					IsDraft: true,
+				},
 			},
 			isDev: true,
 			want:  true,
@@ -23,7 +25,9 @@ func TestCanServe(t *testing.T) {
 		{
 			name: "draft in prod",
 			bl: Blog{
-				IsDraft: true,
+				BaseBlog: BaseBlog{
+					IsDraft: true,
+				},
 			},
 			isDev: false,
 			want:  false,
@@ -31,7 +35,9 @@ func TestCanServe(t *testing.T) {
 		{
 			name: "published",
 			bl: Blog{
-				IsDraft: false,
+				BaseBlog: BaseBlog{
+					IsDraft: false,
+				},
 			},
 			isDev: true,
 			want:  true,
@@ -39,7 +45,9 @@ func TestCanServe(t *testing.T) {
 		{
 			name: "published",
 			bl: Blog{
-				IsDraft: false,
+				BaseBlog: BaseBlog{
+					IsDraft: false,
+				},
 			},
 			isDev: false,
 			want:  true,
@@ -56,29 +64,39 @@ func TestCanServe(t *testing.T) {
 
 var testBlogs = Blogs{
 	Blog{
-		Title:   "blog1",
-		IsDraft: false,
-		Date:    time.Date(2001, 1, 1, 1, 1, 1, 0, time.UTC),
+		BaseBlog: BaseBlog{
+			Title:   "blog1",
+			IsDraft: false,
+			Date:    time.Date(2001, 1, 1, 1, 1, 1, 0, time.UTC),
+		},
 	},
 	Blog{
-		Title:   "blog2",
-		IsDraft: false,
-		Date:    time.Date(2022, 1, 1, 1, 1, 1, 0, time.UTC),
+		BaseBlog: BaseBlog{
+			Title:   "blog2",
+			IsDraft: false,
+			Date:    time.Date(2022, 1, 1, 1, 1, 1, 0, time.UTC),
+		},
 	},
 	Blog{
-		Title:   "blog3",
-		IsDraft: false,
-		Date:    time.Date(2003, 1, 1, 1, 1, 1, 0, time.UTC),
+		BaseBlog: BaseBlog{
+			Title:   "blog3",
+			IsDraft: false,
+			Date:    time.Date(2003, 1, 1, 1, 1, 1, 0, time.UTC),
+		},
 	},
 	Blog{
-		Title:   "blog4",
-		IsDraft: true,
-		Date:    time.Date(2000, 1, 1, 1, 1, 1, 0, time.UTC),
+		BaseBlog: BaseBlog{
+			Title:   "blog4",
+			IsDraft: true,
+			Date:    time.Date(2000, 1, 1, 1, 1, 1, 0, time.UTC),
+		},
 	},
 	Blog{
-		Title:   "blog5",
-		IsDraft: true,
-		Date:    time.Date(2011, 1, 1, 1, 1, 1, 0, time.UTC),
+		BaseBlog: BaseBlog{
+			Title:   "blog5",
+			IsDraft: true,
+			Date:    time.Date(2011, 1, 1, 1, 1, 1, 0, time.UTC),
+		},
 	},
 }
 
