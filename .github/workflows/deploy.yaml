@@ -28,6 +28,6 @@ jobs:
         run: make test
 
       - name: Deploy to FlyIO
-        run: fly deploy
-        env: 
-          FLY_API_TOKEN=${{ secrets.FLY_API_TOKEN }}
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
