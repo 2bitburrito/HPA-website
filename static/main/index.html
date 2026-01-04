@@ -53,8 +53,22 @@
 
   <div class="container">
     
+    <section style="margin: 100px;" id="aboutme" class="aboutme">
+      <h2>About Me</h2>
+      <div class="aboutme-content">
+        <img src="../Images/REM_0394 BTS Chefchaouen 2.jpeg" alt="Hugh Palmer" id="Hugh-img" />
+        <p id="about-me-p">
+          <strong>PASSIONATE SOFTWARE DEVELOPER based in Melbourne Australia</strong>
+          <br />
+          <br />
+          I love understaning how things work, making things and fixing things.
+        </p>
+      </div>
+    </section>
+
+    
     <section id="blog-index">
-      <h2 style="margin-top: 100px;">All of my thoughts...</h2>
+      <h2>Some of my thoughts...</h2>
       <div class="blog-list">
   
   <ol>
@@ -70,6 +84,61 @@
   
 </div>
 
+    </section>
+
+    
+    <section>
+      <div id="external-links">
+        <h2>Stuff I Make</h2>
+        <p>
+          I am also obsessed with making cool (and hopefully useful) products.
+        </p>
+        <p>
+          You can check out some of my side projects below:
+        </p>
+        <div class="side-projects">
+          <div class="proj">
+            <div>
+              <a class="ext-links" href="http://www.metasoundtools.com" target="_blank" rel="noopener noreferrer">
+                <img width="150" height="150" class="link-img" src="./../Images/mst-icon.png" alt="Meta Sound Tools">
+              </a>
+            </div>
+          </div>
+          <div class="proj">
+            <a class="ext-links" href="https://www.dhundesigns.com" target="_blank" rel="noopener noreferrer">
+              <img width="150" height="150" class="link-img" src="./../Images/Black on White.png" alt="Dhun Designs">
+            </a>
+          </div>
+        </div>
+        <p>
+          This site was built and deployed by me.
+        </p>
+      </div>
+    </section>
+    
+    <section>
+      <div class="contact-form">
+        <h2>Get In Touch!</h2>
+        <span id="form-response"></span>
+        <form hx-indicator="#spinner" hx-on::after-request="if(event.detail.successful) this.reset()"
+          hx-post="/api/contact/" hx-target="#form-response" id="contact-form">
+          <p>
+            <label for="form-name">Name:</label>
+            <br>
+            <input type="text" id="form-name" required placeholder="Name" name="form-name">
+            <label for="form-email">Email:</label>
+            <br>
+            <input type="email" id="form-email" required placeholder="Email" name="form-email">
+            <label for="form-message">Message:</label> <br>
+            <textarea id="form-message" name="form-message" required placeholder="Input your message here" rows="5"
+              cols="80"></textarea>
+          </p>
+          <p>
+            <button type="submit" class="btn">Submit</button>
+          </p>
+        </form>
+        <div id="spinner" class="htmx-indicator">Sending...</div>
+      </div>
     </section>
 
     

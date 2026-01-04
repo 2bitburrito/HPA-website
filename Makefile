@@ -7,12 +7,13 @@ generate:
 
 build:
 	@echo "Building..."
-	
 	@go build -o main cmd/server/main.go
 
-# Build for ec2
-build-ec2:
-	@GOOS=linux GOARCH=arm64 go build -v -o main ./cmd/server/main.go
+# Build for docker
+build-docker:
+	@echo "Building..."
+	
+	@go build -v -o /run-app cmd/server/main.go
 
 # Run the application
 run:
