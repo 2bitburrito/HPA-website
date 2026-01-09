@@ -532,11 +532,10 @@ nav ul {
 
 /* Footer */
 footer {
-  background-color: var(--color-secondary);
   color: var(--color-text);
   padding: var(--space-8) 0;
   text-align: center;
-  margin-top: var(--space-16);
+  margin-top: var(--space-4);
 }
 
 footer .socials {
