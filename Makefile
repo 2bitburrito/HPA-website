@@ -3,7 +3,7 @@
 all: build test
 
 generate:
-	@go run cmd/generate/main.go
+	@go run ./cmd/generate/
 
 build:
 	@echo "Building..."
