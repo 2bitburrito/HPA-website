@@ -21,7 +21,7 @@ func NewBlogs() *Blogs {
 // WriteBlogDataToJSON writes to json file for runtime information
 func WriteBlogDataToJSON(blogs Blogs) error {
 	// print evertyhing except the HTMLContent
-	strippedBlogs := make([]BaseBlog, len(blogs))
+	strippedBlogs := make([]BaseBlog, 0, len(blogs))
 	for _, blg := range blogs {
 		strippedBlogs = append(strippedBlogs, BaseBlog{
 			Title:       blg.Title,

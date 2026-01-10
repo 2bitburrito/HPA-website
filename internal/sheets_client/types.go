@@ -5,8 +5,10 @@ import (
 )
 
 type Client struct {
-	Service *sheets.Service
-	creds   credentials
+	Service      *sheets.Service
+	creds        credentials
+	MainData     MainData
+	ArticleViews ArticleViewCounts
 }
 
 type credentials struct {
@@ -14,7 +16,12 @@ type credentials struct {
 	serviceCredentials string
 }
 
-const (
-	mainTableBounds     = "main_table!A1:Z"
-	pageDataTableBounds = "article_data!A1:Z"
-)
+type MainData struct {
+	HomePageViewCount int
+}
+type ArticleViewCounts map[string]articleData
+
+type articleData struct {
+	Count  int
+	rowNum int
+}

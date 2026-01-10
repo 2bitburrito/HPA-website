@@ -20,3 +20,4 @@ j
 - subscriptions?
 - I like to write code... So let me write the code
 - Would I do it like this again?
+- As always - best part of working a personal project is that I get to over-engineer the bits I love and bootstrap/skip the bits I don't
