@@ -1,3 +1,7 @@
+// Package sheetsclient provides a client for interacting with the Google Sheets API
+// It acts as both a cache and a fetching service to pull from the API
+//
+// This is bad seperation of concerns, but it isn't ever scaling so it is what it is
 package sheetsclient
 
 import (
@@ -31,12 +35,35 @@ func CreateSheetsService(spreadsheetID, serviceCredentials string) (*Client, err
 		return nil, fmt.Errorf("unable to retrieve sheets service: %w", err)
 	}
 	return &Client{
-		Service: srv,
+		service: srv,
 		creds: credentials{
 			spreadsheetID:      spreadsheetID,
 			serviceCredentials: serviceCredentials,
 		},
 	}, nil
+}
+
+// GetAllData retrieves all data from the sheets API and stores it in the client
+// It is the main call after creating the client to get fresh data from the sheets API
+func (c *Client) GetAllData() error {
+	allRanges, err := c.batchGetAllSheetData()
+	if err != nil {
+		return fmt.Errorf("unable to retrieve all sheet data: %w", err)
+	}
+
+	// The first slice will be the main table
+	c.MainData, err = c.extractMainTableFromData(allRanges[0].Values)
+	if err != nil {
+		return fmt.Errorf("unable to extract main table data: %w", err)
+	}
+
+	// The second slice will be the article data
+	c.ArticleViews, err = c.extractArticlesFromData(allRanges[1].Values)
+	if err != nil {
+		return fmt.Errorf("unable to extract article data: %w", err)
+	}
+
+	return nil
 }
 
 // GetMainData returns the main table data for the site
@@ -46,28 +73,43 @@ func (c *Client) GetMainData() (MainData, error) {
 	if err != nil {
 		return MainData{}, err
 	}
-	views, ok := t[0][1].(int)
-	if !ok {
-		return MainData{}, fmt.Errorf("unable to convert main table view count to int")
-	}
-	c.MainData = MainData{
-		HomePageViewCount: views,
-	}
 
-	return c.MainData, nil
+	return c.extractMainTableFromData(t)
 }
 
 func (c *Client) GetAllArticleViews() (ArticleViewCounts, error) {
-	pd, err := c.getPageData()
+	pd, err := c.getArticleData()
 	if err != nil {
 		return ArticleViewCounts{}, err
 	}
 	return c.extractArticlesFromData(pd)
 }
 
+func (c *Client) FlushToSheets() error {
+	md := c.restructureMainTable()
+	pd := c.restructureArticleData()
+
+	br := &sheets.BatchUpdateValuesRequest{
+		ValueInputOption: "RAW",
+		Data: []*sheets.ValueRange{
+			{
+				Range:  mainTableBounds,
+				Values: md,
+			},
+			{
+				Range:  pageDataTableBounds,
+				Values: pd,
+			},
+		},
+	}
+	_, err := c.service.Spreadsheets.Values.BatchUpdate(c.creds.spreadsheetID, br).Do()
+	return err
+}
+
 // extractArticlesFromData takes raw matrix data from page_data and extracts the article titles,
 // view counts and row numbers
 func (c *Client) extractArticlesFromData(pageData [][]any) (ArticleViewCounts, error) {
+	var articleViews []articleData
 	for i, row := range pageData {
 		if i == 0 {
 			continue
@@ -80,26 +122,68 @@ func (c *Client) extractArticlesFromData(pageData [][]any) (ArticleViewCounts, e
 		if !ok {
 			return nil, fmt.Errorf("couldn't cast %v to int", row[0])
 		}
-		c.ArticleViews[title] = articleData{
-			Count:  n,
-			rowNum: i,
-		}
+		articleViews = append(articleViews, articleData{
+			Title: title,
+			Count: n,
+		})
 	}
+	c.ArticleViews = articleViews
 	return c.ArticleViews, nil
 }
 
+// extractMainTableFromData takes raw matrix data from main_table and extracts the view count
+//
+// It is currently just extracting the home page view count as that is all we are storing in the main table
+func (c *Client) extractMainTableFromData(mainTable [][]any) (MainData, error) {
+	views, ok := mainTable[1][1].(int)
+	if !ok {
+		return MainData{}, fmt.Errorf("unable to convert main table view count to int")
+	}
+	c.MainData = MainData{
+		HomePageViewCount: views,
+	}
+	return c.MainData, nil
+}
+
 func (c *Client) getMainTable() ([][]any, error) {
-	mainTable, err := c.Service.Spreadsheets.Values.Get(c.creds.spreadsheetID, mainTableBounds).Do()
+	mainTable, err := c.service.Spreadsheets.Values.Get(c.creds.spreadsheetID, mainTableBounds).Do()
 	if err != nil {
 		return nil, fmt.Errorf("unable to retrieve main table data: %w", err)
 	}
 	return mainTable.Values, nil
 }
 
-func (c *Client) getPageData() ([][]any, error) {
-	pageData, err := c.Service.Spreadsheets.Values.Get(c.creds.spreadsheetID, pageDataTableBounds).Do()
+func (c *Client) getArticleData() ([][]any, error) {
+	pageData, err := c.service.Spreadsheets.Values.Get(c.creds.spreadsheetID, pageDataTableBounds).Do()
 	if err != nil {
 		return nil, fmt.Errorf("unable to retrieve page data table data: %w", err)
 	}
 	return pageData.Values, nil
+}
+
+func (c *Client) batchGetAllSheetData() ([]*sheets.ValueRange, error) {
+	dat, err := c.service.Spreadsheets.Values.BatchGet(c.creds.spreadsheetID).Ranges(mainTableBounds, pageDataTableBounds).Do()
+	if err != nil {
+		return nil, fmt.Errorf("unable to retrieve all sheet data: %w", err)
+	}
+	return dat.ValueRanges, nil
+}
+
+func (c *Client) restructureMainTable() [][]any {
+	n := c.MainData.HomePageViewCount
+	t := [][]any{
+		{"homepage_views"},
+		{n},
+	}
+	return t
+}
+
+func (c *Client) restructureArticleData() [][]any {
+	d := [][]any{{"blog_title", "views"}}
+
+	for _, v := range c.ArticleViews {
+		d = append(d, []any{v.Title, v.Count})
+	}
+
+	return d
 }

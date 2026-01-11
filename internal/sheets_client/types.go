@@ -5,7 +5,7 @@ import (
 )
 
 type Client struct {
-	Service      *sheets.Service
+	service      *sheets.Service
 	creds        credentials
 	MainData     MainData
 	ArticleViews ArticleViewCounts
@@ -19,9 +19,9 @@ type credentials struct {
 type MainData struct {
 	HomePageViewCount int
 }
-type ArticleViewCounts map[string]articleData
+type ArticleViewCounts []articleData
 
 type articleData struct {
-	Count  int
-	rowNum int
+	Title string
+	Count int
 }

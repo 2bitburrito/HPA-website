@@ -35,11 +35,20 @@ func TestGetSheetsPages(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unable to get main table: %v", err)
 	}
-	pageData, err := svc.getPageData()
+	pageData, err := svc.getArticleData()
 	if err != nil {
 		t.Fatalf("unable to get page data: %v", err)
 	}
-	fmt.Println(mainTable, pageData)
+	fmt.Println("main table: ", mainTable)
+	fmt.Println("page data: ", pageData)
+
+	allData, err := svc.batchGetAllSheetData()
+	if err != nil {
+		t.Fatalf("unable to get all data")
+	}
+	for i, v := range allData {
+		fmt.Println("batchdata #", i, v.Values)
+	}
 }
 
 func TestExtractArticlesFromData(t *testing.T) {
@@ -58,17 +67,17 @@ func TestExtractArticlesFromData(t *testing.T) {
 				{"Article 3", 30},
 			},
 			rtnData: ArticleViewCounts{
-				"Article 1": articleData{
-					Count:  10,
-					rowNum: 1,
+				articleData{
+					Title: "Article 1",
+					Count: 10,
 				},
-				"Article 2": articleData{
-					Count:  20,
-					rowNum: 2,
+				articleData{
+					Count: 20,
+					Title: "Article 2",
 				},
-				"Article 3": articleData{
-					Count:  30,
-					rowNum: 3,
+				articleData{
+					Title: "Article 3",
+					Count: 30,
 				},
 			},
 			shouldErr: false,
@@ -87,7 +96,7 @@ func TestExtractArticlesFromData(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			c := &Client{
-				Service:      &sheets.Service{},
+				service:      &sheets.Service{},
 				creds:        credentials{},
 				MainData:     MainData{},
 				ArticleViews: ArticleViewCounts{},
