@@ -1,14 +1,13 @@
 package server
 
 import (
-	"fmt"
 	"net/http"
 )
 
 func (s *Server) HandleServeBlog(w http.ResponseWriter, r *http.Request) {
 	name := r.PathValue("name")
 
-	fmt.Println("serving: ", name)
+	s.Dependencies.SheetsService.ArticleViews.Increment(name)
 
 	blog, exists := s.Dependencies.Blogs.Get(name, s.isDev)
 	if !exists {

@@ -1,14 +1,17 @@
 package sheetsclient
 
 import (
+	"context"
+
 	"google.golang.org/api/sheets/v4"
 )
 
 type Client struct {
-	service      *sheets.Service
-	creds        credentials
-	MainData     MainData
-	ArticleViews ArticleViewCounts
+	service       *sheets.Service
+	creds         credentials
+	MainData      MainData
+	ArticleViews  ArticleViewCounts
+	cancelFlushes context.CancelFunc
 }
 
 type credentials struct {
