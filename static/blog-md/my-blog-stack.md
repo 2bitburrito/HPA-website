@@ -29,7 +29,7 @@ I had a few requirements going into this:
 ### Nice Not to Haves:
 - JavaScript... (OK I'll stop now)
 
-## So how did I do it?
+## Templating
 
 I know that Hugo is written in Go so my first thought was what is Hugo doing? After some initial digging I found that it's using [Goldmark](https://github.com/yuin/goldmark) to parse markdown files. Excellent... If it works for them it'll work for me. 
 
@@ -38,17 +38,17 @@ I know that Hugo is written in Go so my first thought was what is Hugo doing? Af
   <figcaption>Found it!</figcaption>
 </figure>
 
-Turns out that using `goldmark` is really quite simple. It's just a matter of creating a `goldmark.Markdown` instance and then calling `Convert` on it.
+Turns out that using `goldmark` is really quite simple. It's just a matter of creating a `goldmark.Markdown{}` instance and then calling `Convert` on it.
 
 ```go
-renderer := goldmark.New()
+renderer := goldmark.New() // This returns a goldmark.Markdown{} instance
 err := renderer.Convert(source, &buf)
 if err != nil {
   panic(err)
 }
 ```
 
-Nice and simple. However what's really great about goldmark is that it's completely extensible via plugins. You want code highlighting, frontmatter metadata parsing or latex parsing? No problem
+Nice and simple. However what's really great about goldmark is that it's completely extensible via plugins. You want code highlighting, front-matter metadata parsing or latex parsing? No problem
 
 ```go
 renderer := goldmark.New(
@@ -66,8 +66,24 @@ if err != nil {
 }
 ```
 
-And to take it even further, if you have some experience walking AST's you can quite easily write a custom parser for your own implementations. However I will leave that up to you to investigate further.
+And to take it even further, if you have some experience walking AST's you can quite easily write a custom parser for your own implementations (say a custom widget or interactive buttons). However I will leave that up to you to investigate further.
 
+So with this in place and Go's solid templating system I have a great way to write simple markdown files that will be converted to html.
+
+## Serving the Site...
+
+I am completely aware that the most performant and "modern" way to serve a static site like this is to use a CDN such as Cloudflare or GitHub Pages. However I steered away from this for a few reasons:
+1. Part of my motivation for writing this site was to learn how the standard model of website is served. Lots of modern web frameworks such as NextJS abstract away what is actually happening on the server - I hate not knowing what is happening under the hood.  
+2. Simply slapping static elements in a CDN doesn't teach me much.
+3. I want the ability to extend the site with features such as HTMX and a metric system for view counts (more on this later).
+
+So with all this in mind I decided to use a simple Go server to serve the site. I've written a few Go servers before and am a big fan of using Melkey's [go-blueprint](https://github.com/go-go/blueprint) to get started with a basic server which is 90% what I want already. 
+
+One nice thing that came bundled in the blueprint was [air](https://github.com/air-verse/air). Air is a tool for hot-reloading of Go programs while you are working on them. It constantly watches your files in the project and if anything is changed then it will rebuild the binary. This proved crucial for someone coming from the really nice dev experience of working with Vite projects in JS. I just needed to save my file and boom, a second later the changes are made to the running program.
+
+## Site Data
+
+Next I 
 
 
 > [!NOTES]
