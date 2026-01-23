@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-const flushInterval = time.Minute * 5
+const flushInterval = time.Minute * 10
 
 func (c *Client) Get(name string) (int, error) {
 	if c.ArticleViews == nil {

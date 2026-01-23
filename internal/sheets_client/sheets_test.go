@@ -5,6 +5,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/2bitburrito/hpa-website/internal/blog"
 	"github.com/joho/godotenv"
 	"google.golang.org/api/sheets/v4"
 )
@@ -108,6 +109,132 @@ func TestExtractArticlesFromData(t *testing.T) {
 			for k, v := range tC.rtnData {
 				if data[k] != v {
 					t.Errorf("expected %v, got %v", v, data[k])
+				}
+			}
+		})
+	}
+}
+
+func TestFindMissingBlogs(t *testing.T) {
+	testCases := []struct {
+		desc         string
+		nuBlogs      blog.Blogs
+		exstBlogs    ArticleViewCounts
+		expectedBlgs [][]any
+	}{
+		{
+			desc: "Finds missing blogs",
+			nuBlogs: blog.Blogs{
+				blog.Blog{
+					BaseBlog: blog.BaseBlog{
+						Title: "Blog 1",
+					},
+				},
+				blog.Blog{
+					BaseBlog: blog.BaseBlog{
+						Title: "Blog 2",
+					},
+				},
+				blog.Blog{
+					BaseBlog: blog.BaseBlog{
+						Title: "Blog 3",
+					},
+				},
+				blog.Blog{
+					BaseBlog: blog.BaseBlog{
+						Title: "Blog 4",
+					},
+				},
+				blog.Blog{
+					BaseBlog: blog.BaseBlog{
+						Title: "Blog 5",
+					},
+				},
+			},
+			exstBlogs: ArticleViewCounts{
+				articleData{
+					Title: "Blog 1",
+					Count: 10,
+				},
+				articleData{
+					Title: "Blog 2",
+					Count: 20,
+				},
+				articleData{
+					Title: "Blog 3",
+					Count: 30,
+				},
+			},
+			expectedBlgs: [][]any{
+				{"Blog 4", 0},
+				{"Blog 5", 0},
+			},
+		},
+		{
+			desc: "Returns nothing for no new blogs",
+			nuBlogs: blog.Blogs{
+				blog.Blog{
+					BaseBlog: blog.BaseBlog{
+						Title: "Blog 3",
+					},
+				},
+				blog.Blog{
+					BaseBlog: blog.BaseBlog{
+						Title: "Blog 2",
+					},
+				},
+				blog.Blog{
+					BaseBlog: blog.BaseBlog{
+						Title: "Blog 3",
+					},
+				},
+				blog.Blog{
+					BaseBlog: blog.BaseBlog{
+						Title: "Blog 4",
+					},
+				},
+				blog.Blog{
+					BaseBlog: blog.BaseBlog{
+						Title: "Blog 5",
+					},
+				},
+			},
+			exstBlogs: ArticleViewCounts{
+				articleData{
+					Title: "Blog 1",
+					Count: 10,
+				},
+				articleData{
+					Title: "Blog 2",
+					Count: 20,
+				},
+				articleData{
+					Title: "Blog 3",
+					Count: 30,
+				},
+				articleData{
+					Title: "Blog 4",
+					Count: 30,
+				},
+				articleData{
+					Title: "Blog 5",
+					Count: 30,
+				},
+			},
+			expectedBlgs: [][]any{},
+		},
+	}
+
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			rtnBlogs := findMissingBlogs(tC.nuBlogs, tC.exstBlogs)
+			if len(rtnBlogs) != len(tC.expectedBlgs) {
+				t.Errorf("expected %v, got %v", tC.expectedBlgs, rtnBlogs)
+				t.FailNow()
+			}
+			for i := 0; i < len(tC.expectedBlgs); i++ {
+				if tC.expectedBlgs[i][0] != rtnBlogs[i][0] {
+					t.Errorf("expected %v, got %v", tC.expectedBlgs[i][0], rtnBlogs[i][0])
 				}
 			}
 		})

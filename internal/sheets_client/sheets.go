@@ -1,7 +1,7 @@
 // Package sheetsclient provides a client for interacting with the Google Sheets API
 // It acts as both a cache and a fetching service to pull from the API
 //
-// This is bad seperation of concerns, but it isn't ever scaling so it is what it is
+// There are some bad seperation of concerns here, but it isn't ever scaling so it is what it is
 package sheetsclient
 
 import (
@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/2bitburrito/hpa-website/internal/blog"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/option"
 	"google.golang.org/api/sheets/v4"
@@ -45,7 +46,7 @@ func CreateSheetsService(spreadsheetID, serviceCredentials string) (*Client, err
 
 // GetAllData retrieves all data from the sheets API and stores it in the client
 // It is the main call after creating the client to get fresh data from the sheets API
-func (c *Client) GetAllData() error {
+func (c *Client) GetAllData(blgs blog.Blogs) error {
 	allRanges, err := c.batchGetAllSheetData()
 	if err != nil {
 		return fmt.Errorf("unable to retrieve all sheet data: %w", err)
@@ -62,6 +63,8 @@ func (c *Client) GetAllData() error {
 	if err != nil {
 		return fmt.Errorf("unable to extract article data: %w", err)
 	}
+
+	c.EnsureAllBlogsExist(blgs)
 
 	return nil
 }
@@ -169,6 +172,7 @@ func (c *Client) batchGetAllSheetData() ([]*sheets.ValueRange, error) {
 	return dat.ValueRanges, nil
 }
 
+// restructureMainTable restructures the main table data to be in the format expected by the sheets API
 func (c *Client) restructureMainTable() [][]any {
 	n := c.MainData.HomePageViewCount
 	t := [][]any{
@@ -186,4 +190,48 @@ func (c *Client) restructureArticleData() [][]any {
 	}
 
 	return d
+}
+
+func (c *Client) EnsureAllBlogsExist(blgs blog.Blogs) error {
+	missing := findMissingBlogs(blgs, c.ArticleViews)
+
+	err := c.addNewArticleRows(missing)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func findMissingBlogs(nuBlgs blog.Blogs, exstBlgs ArticleViewCounts) [][]any {
+	var doesntExist [][]any
+
+	// Loop through the blog data and check agains all existing rows returned from the sheets API
+	// If it doesn't exist in the sheet already then return it to be appended
+	for _, nuBlg := range nuBlgs {
+		exists := false
+		for _, exstBlg := range exstBlgs {
+			if nuBlg.Title == exstBlg.Title {
+				exists = true
+				break
+			}
+		}
+		if !exists {
+			doesntExist = append(doesntExist, []any{nuBlg.Title, 0})
+		}
+	}
+
+	return doesntExist
+}
+
+func (c *Client) addNewArticleRows(missing [][]any) error {
+	if len(missing) == 0 {
+		return nil
+	}
+	_, err := c.service.Spreadsheets.Values.Append(
+		c.creds.spreadsheetID,
+		pageDataTableBounds,
+		&sheets.ValueRange{
+			Values: missing,
+		}).ValueInputOption("RAW").Do()
+	return err
 }

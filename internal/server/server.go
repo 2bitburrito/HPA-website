@@ -33,6 +33,7 @@ func NewServer(params setup.Dependencies) *http.Server {
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
 	}
+
 	log.Println("Server Started Successfully On Port: ", port)
 	return server
 }
