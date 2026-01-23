@@ -20,13 +20,18 @@ func (c *Client) Get(name string) (int, error) {
 	return 0, fmt.Errorf("failed to find article in cache")
 }
 
-func (c *Client) Increment(name string) {
+func (c *Client) IncrementMain() {
+	c.MainData.HomePageViewCount++
+}
+
+func (c *Client) Increment(name string) error {
 	for i, v := range c.ArticleViews {
 		if v.Title == name {
 			c.ArticleViews[i].Count++
-			return
+			return nil
 		}
 	}
+	return fmt.Errorf("failed to find article in cache")
 }
 
 func (c *Client) SetFlushRoutine(ctx context.Context) {

@@ -1,13 +1,17 @@
 package server
 
 import (
+	"fmt"
 	"net/http"
 )
 
 func (s *Server) HandleServeBlog(w http.ResponseWriter, r *http.Request) {
 	name := r.PathValue("name")
 
-	s.Dependencies.SheetsService.ArticleViews.Increment(name)
+	err := s.Dependencies.SheetsService.Increment(name)
+	if err != nil {
+		fmt.Println("failed to increment sheets view count: ", err)
+	}
 
 	blog, exists := s.Dependencies.Blogs.Get(name, s.isDev)
 	if !exists {

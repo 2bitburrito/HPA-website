@@ -7,6 +7,7 @@ package sheetsclient
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/2bitburrito/hpa-website/internal/blog"
@@ -121,13 +122,17 @@ func (c *Client) extractArticlesFromData(pageData [][]any) (ArticleViewCounts, e
 		if !ok {
 			return nil, fmt.Errorf("unable to cast %v to string", row[0])
 		}
-		n, ok := row[1].(int)
+		n, ok := row[1].(string)
 		if !ok {
 			return nil, fmt.Errorf("couldn't cast %v to int", row[0])
 		}
+		nInt, err := strconv.Atoi(n)
+		if err != nil {
+			return nil, fmt.Errorf("unable to convert %v to int", n)
+		}
 		articleViews = append(articleViews, articleData{
 			Title: title,
-			Count: n,
+			Count: nInt,
 		})
 	}
 	c.ArticleViews = articleViews
@@ -138,12 +143,21 @@ func (c *Client) extractArticlesFromData(pageData [][]any) (ArticleViewCounts, e
 //
 // It is currently just extracting the home page view count as that is all we are storing in the main table
 func (c *Client) extractMainTableFromData(mainTable [][]any) (MainData, error) {
-	views, ok := mainTable[1][1].(int)
+	if len(mainTable) < 1 || len(mainTable[1]) < 1 {
+		return MainData{}, fmt.Errorf("main table data is not the correct length")
+	}
+
+	views, ok := mainTable[1][0].(string)
 	if !ok {
-		return MainData{}, fmt.Errorf("unable to convert main table view count to int")
+		return MainData{}, fmt.Errorf("unable to convert main table view count to string: (%v)", mainTable[1][0])
+	}
+
+	viewsInt, err := strconv.Atoi(views)
+	if err != nil {
+		return MainData{}, fmt.Errorf("unable to convert main table view count to int: (%v)", views)
 	}
 	c.MainData = MainData{
-		HomePageViewCount: views,
+		HomePageViewCount: viewsInt,
 	}
 	return c.MainData, nil
 }

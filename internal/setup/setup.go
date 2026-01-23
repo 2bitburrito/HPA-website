@@ -44,6 +44,10 @@ func Setup() (Dependencies, error) {
 	if err != nil {
 		return Dependencies{}, fmt.Errorf("unable to create sheets service: %w", err)
 	}
+	err = sheetsSvc.GetAllData(blogs)
+	if err != nil {
+		return Dependencies{}, fmt.Errorf("unable to get all data from sheets: %w", err)
+	}
 
 	return Dependencies{
 		Aws:           awsCfg,

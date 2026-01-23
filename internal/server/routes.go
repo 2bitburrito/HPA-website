@@ -15,7 +15,6 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	// Blog handler
 	mux.HandleFunc("/blog/{name}/", s.HandleServeBlog)
-
 	mux.Handle("/", http.FileServer(http.Dir("./static/")))
 	// Wrap the mux with CORS middleware
 	return s.corsMiddleware(mux)
@@ -34,6 +33,9 @@ func (s *Server) corsMiddleware(next http.Handler) http.Handler {
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
+
+		// Increment the view count for the home page
+		s.Dependencies.SheetsService.IncrementMain()
 
 		// Proceed with the next handler
 		next.ServeHTTP(w, r)
