@@ -13,7 +13,7 @@ import (
 	"github.com/2bitburrito/hpa-website/internal/setup"
 )
 
-func gracefulShutdown(apiServer *http.Server, done chan bool) {
+func gracefulShutdown(apiServer *http.Server, done chan bool, deps setup.Dependencies) {
 	// Create context that listens for the interrupt signal from the OS.
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
@@ -23,6 +23,12 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 
 	log.Println("shutting down gracefully, press Ctrl+C again to force")
 	stop() // Allow Ctrl+C to force shutdown
+
+	// Flush the in-mem cache to the sheets API
+	err := deps.SheetsService.FlushToSheets()
+	if err != nil {
+		log.Printf("unable to flush to sheets: %v", err)
+	}
 
 	// The context is used to inform the server it has 5 seconds to finish
 	// the request it is currently handling
@@ -49,7 +55,7 @@ func main() {
 	done := make(chan bool, 1)
 
 	// Run graceful shutdown in a separate goroutine
-	go gracefulShutdown(server, done)
+	go gracefulShutdown(server, done, deps)
 
 	err = server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {

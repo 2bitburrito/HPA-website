@@ -25,6 +25,6 @@ type MainData struct {
 type ArticleViewCounts []articleData
 
 type articleData struct {
-	Title string
+	Name  string // This is the title of the blog in kebab case (it matches the file name)
 	Count int
 }

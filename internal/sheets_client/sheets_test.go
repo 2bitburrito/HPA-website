@@ -63,21 +63,21 @@ func TestExtractArticlesFromData(t *testing.T) {
 			desc: "Correctly extracts article titles and view counts",
 			mtrx: [][]any{
 				{"blog_title", "views"},
-				{"Article 1", 10},
-				{"Article 2", 20},
-				{"Article 3", 30},
+				{"Article 1", "10"},
+				{"Article 2", "20"},
+				{"Article 3", "30"},
 			},
 			rtnData: ArticleViewCounts{
 				articleData{
-					Title: "Article 1",
+					Name:  "Article 1",
 					Count: 10,
 				},
 				articleData{
+					Name:  "Article 2",
 					Count: 20,
-					Title: "Article 2",
 				},
 				articleData{
-					Title: "Article 3",
+					Name:  "Article 3",
 					Count: 30,
 				},
 			},
@@ -127,47 +127,47 @@ func TestFindMissingBlogs(t *testing.T) {
 			nuBlogs: blog.Blogs{
 				blog.Blog{
 					BaseBlog: blog.BaseBlog{
-						Title: "Blog 1",
+						FileName: "Blog_1",
 					},
 				},
 				blog.Blog{
 					BaseBlog: blog.BaseBlog{
-						Title: "Blog 2",
+						FileName: "Blog_2",
 					},
 				},
 				blog.Blog{
 					BaseBlog: blog.BaseBlog{
-						Title: "Blog 3",
+						FileName: "Blog_3",
 					},
 				},
 				blog.Blog{
 					BaseBlog: blog.BaseBlog{
-						Title: "Blog 4",
+						FileName: "Blog_4",
 					},
 				},
 				blog.Blog{
 					BaseBlog: blog.BaseBlog{
-						Title: "Blog 5",
+						FileName: "Blog_5",
 					},
 				},
 			},
 			exstBlogs: ArticleViewCounts{
 				articleData{
-					Title: "Blog 1",
+					Name:  "Blog_1",
 					Count: 10,
 				},
 				articleData{
-					Title: "Blog 2",
+					Name:  "Blog_2",
 					Count: 20,
 				},
 				articleData{
-					Title: "Blog 3",
+					Name:  "Blog_3",
 					Count: 30,
 				},
 			},
 			expectedBlgs: [][]any{
-				{"Blog 4", 0},
-				{"Blog 5", 0},
+				{"Blog_4", 0},
+				{"Blog_5", 0},
 			},
 		},
 		{
@@ -175,49 +175,49 @@ func TestFindMissingBlogs(t *testing.T) {
 			nuBlogs: blog.Blogs{
 				blog.Blog{
 					BaseBlog: blog.BaseBlog{
-						Title: "Blog 3",
+						FileName: "Blog_1",
 					},
 				},
 				blog.Blog{
 					BaseBlog: blog.BaseBlog{
-						Title: "Blog 2",
+						FileName: "Blog_2",
 					},
 				},
 				blog.Blog{
 					BaseBlog: blog.BaseBlog{
-						Title: "Blog 3",
+						FileName: "Blog_3",
 					},
 				},
 				blog.Blog{
 					BaseBlog: blog.BaseBlog{
-						Title: "Blog 4",
+						FileName: "Blog_4",
 					},
 				},
 				blog.Blog{
 					BaseBlog: blog.BaseBlog{
-						Title: "Blog 5",
+						FileName: "Blog_5",
 					},
 				},
 			},
 			exstBlogs: ArticleViewCounts{
 				articleData{
-					Title: "Blog 1",
+					Name:  "Blog_1",
 					Count: 10,
 				},
 				articleData{
-					Title: "Blog 2",
+					Name:  "Blog_2",
 					Count: 20,
 				},
 				articleData{
-					Title: "Blog 3",
+					Name:  "Blog_3",
 					Count: 30,
 				},
 				articleData{
-					Title: "Blog 4",
+					Name:  "Blog_4",
 					Count: 30,
 				},
 				articleData{
-					Title: "Blog 5",
+					Name:  "Blog_5",
 					Count: 30,
 				},
 			},
@@ -232,6 +232,7 @@ func TestFindMissingBlogs(t *testing.T) {
 				t.Errorf("expected %v, got %v", tC.expectedBlgs, rtnBlogs)
 				t.FailNow()
 			}
+			fmt.Println(rtnBlogs)
 			for i := 0; i < len(tC.expectedBlgs); i++ {
 				if tC.expectedBlgs[i][0] != rtnBlogs[i][0] {
 					t.Errorf("expected %v, got %v", tC.expectedBlgs[i][0], rtnBlogs[i][0])

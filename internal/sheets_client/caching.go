@@ -13,7 +13,7 @@ func (c *Client) Get(name string) (int, error) {
 		return 0, fmt.Errorf("no article views set")
 	}
 	for _, v := range c.ArticleViews {
-		if v.Title == name {
+		if v.Name == name {
 			return v.Count, nil
 		}
 	}
@@ -26,7 +26,7 @@ func (c *Client) IncrementMain() {
 
 func (c *Client) Increment(name string) error {
 	for i, v := range c.ArticleViews {
-		if v.Title == name {
+		if v.Name == name {
 			c.ArticleViews[i].Count++
 			return nil
 		}

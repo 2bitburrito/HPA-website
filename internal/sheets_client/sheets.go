@@ -65,7 +65,10 @@ func (c *Client) GetAllData(blgs blog.Blogs) error {
 		return fmt.Errorf("unable to extract article data: %w", err)
 	}
 
-	c.EnsureAllBlogsExist(blgs)
+	err = c.EnsureAllBlogsExist(blgs)
+	if err != nil {
+		return fmt.Errorf("unable to ensure all blogs exist: %w", err)
+	}
 
 	return nil
 }
@@ -118,20 +121,22 @@ func (c *Client) extractArticlesFromData(pageData [][]any) (ArticleViewCounts, e
 		if i == 0 {
 			continue
 		}
+		// The first column is the blog title
 		title, ok := row[0].(string)
 		if !ok {
 			return nil, fmt.Errorf("unable to cast %v to string", row[0])
 		}
+		// The second column is the number of views
 		n, ok := row[1].(string)
 		if !ok {
-			return nil, fmt.Errorf("couldn't cast %v to int", row[0])
+			return nil, fmt.Errorf("couldn't cast %v to string", row[1])
 		}
 		nInt, err := strconv.Atoi(n)
 		if err != nil {
 			return nil, fmt.Errorf("unable to convert %v to int", n)
 		}
 		articleViews = append(articleViews, articleData{
-			Title: title,
+			Name:  title,
 			Count: nInt,
 		})
 	}
@@ -200,12 +205,14 @@ func (c *Client) restructureArticleData() [][]any {
 	d := [][]any{{"blog_title", "views"}}
 
 	for _, v := range c.ArticleViews {
-		d = append(d, []any{v.Title, v.Count})
+		d = append(d, []any{v.Name, v.Count})
 	}
 
 	return d
 }
 
+// EnsureAllBlogsExist checks to see if all the blogs in the blog.Blogs struct exist in the sheets API
+// If they don't then it adds them
 func (c *Client) EnsureAllBlogsExist(blgs blog.Blogs) error {
 	missing := findMissingBlogs(blgs, c.ArticleViews)
 
@@ -217,24 +224,24 @@ func (c *Client) EnsureAllBlogsExist(blgs blog.Blogs) error {
 }
 
 func findMissingBlogs(nuBlgs blog.Blogs, exstBlgs ArticleViewCounts) [][]any {
-	var doesntExist [][]any
+	var newArticles [][]any
 
-	// Loop through the blog data and check agains all existing rows returned from the sheets API
+	// Loop through the blog data and check against all existing rows returned from the sheets API
 	// If it doesn't exist in the sheet already then return it to be appended
 	for _, nuBlg := range nuBlgs {
 		exists := false
 		for _, exstBlg := range exstBlgs {
-			if nuBlg.Title == exstBlg.Title {
+			if nuBlg.FileName == exstBlg.Name {
 				exists = true
 				break
 			}
 		}
 		if !exists {
-			doesntExist = append(doesntExist, []any{nuBlg.Title, 0})
+			newArticles = append(newArticles, []any{nuBlg.FileName, 0})
 		}
 	}
 
-	return doesntExist
+	return newArticles
 }
 
 func (c *Client) addNewArticleRows(missing [][]any) error {
