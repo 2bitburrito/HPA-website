@@ -21,7 +21,7 @@ const (
 	pageDataTableBounds = "article_data!A1:Z"
 )
 
-func CreateSheetsService(spreadsheetID, serviceCredentials string) (*Client, error) {
+func CreateSheetsService(spreadsheetID, serviceCredentials string, blgs blog.Blogs) (*Client, error) {
 	scopes := []string{
 		"https://www.googleapis.com/auth/spreadsheets", // This is full read/write access
 	}
@@ -36,13 +36,25 @@ func CreateSheetsService(spreadsheetID, serviceCredentials string) (*Client, err
 	if err != nil {
 		return nil, fmt.Errorf("unable to retrieve sheets service: %w", err)
 	}
-	return &Client{
+
+	c := &Client{
 		service: srv,
 		creds: credentials{
 			spreadsheetID:      spreadsheetID,
 			serviceCredentials: serviceCredentials,
 		},
-	}, nil
+	}
+
+	err = c.GetAllData(blgs)
+	if err != nil {
+		return nil, fmt.Errorf("unable to get all data from sheets: %w", err)
+	}
+
+	ctx, cancel = context.WithCancel(context.Background())
+	c.cancelFlushes = cancel
+	go c.SetFlushRoutine(ctx)
+
+	return c, nil
 }
 
 // GetAllData retrieves all data from the sheets API and stores it in the client

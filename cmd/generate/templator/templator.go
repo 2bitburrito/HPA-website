@@ -40,11 +40,6 @@ func New() (*templator, error) {
 		return nil, err
 	}
 
-	err = t.formatBlogIndexSnippets()
-	if err != nil {
-		return nil, err
-	}
-
 	err = t.scaffoldHTML()
 	if err != nil {
 		return nil, err
@@ -56,30 +51,28 @@ func New() (*templator, error) {
 // scaffoldHTML reads the snippet html for generic pages, writes them to the main and blog-index
 // It also returns the scaffold to be saved into the templator and used for future files as needed
 func (t *templator) scaffoldHTML() error {
-	head, err := os.ReadFile(SnippetDirectory + "head.html")
+	head, err := os.ReadFile(helpers.SnippetDirectory + "head.html")
 	if err != nil {
 		return err
 	}
-	footer, err := os.ReadFile(SnippetDirectory + "footer.html")
+	footer, err := os.ReadFile(helpers.SnippetDirectory + "footer.html")
 	if err != nil {
 		return err
 	}
-	navBar, err := os.ReadFile(SnippetDirectory + "nav-bar.html")
+	navBar, err := os.ReadFile(helpers.SnippetDirectory + "nav-bar.html")
 	if err != nil {
 		return err
 	}
 
 	t.scaffold = HTMLScaffold{
-		Head:            template.HTML(head),
-		Footer:          template.HTML(footer),
-		NavBar:          template.HTML(navBar),
-		BlogListPreview: t.scaffold.BlogListPreview,
-		BlogList:        t.scaffold.BlogList,
+		Head:   template.HTML(head),
+		Footer: template.HTML(footer),
+		NavBar: template.HTML(navBar),
 	}
 
 	tmpl, err := template.ParseFiles(
-		TemplatesDirectory+"main.html",
-		TemplatesDirectory+"blog-index.html",
+		helpers.TemplatesDirectory+"main.html",
+		helpers.TemplatesDirectory+"blog-index.html",
 	)
 	if err != nil {
 		return fmt.Errorf("failed to parse main|snippet templates: %w", err)
@@ -99,7 +92,7 @@ func (t *templator) scaffoldHTML() error {
 }
 
 func (t *templator) GenerateBlogFiles() error {
-	files, err := os.ReadDir(BlogPath)
+	files, err := os.ReadDir(helpers.BlogPath)
 	if err != nil {
 		return fmt.Errorf("failed to read blog directory: %w", err)
 	}
@@ -112,7 +105,7 @@ func (t *templator) GenerateBlogFiles() error {
 			continue
 		}
 
-		mdn, err := os.ReadFile(BlogPath + f.Name())
+		mdn, err := os.ReadFile(helpers.BlogPath + f.Name())
 		if err != nil {
 			return fmt.Errorf("failed to read file: %s\n%v", f.Name(), err)
 		}
@@ -136,7 +129,7 @@ func (t *templator) GenerateBlogFiles() error {
 }
 
 func (t *templator) WriteHTMLArticles() error {
-	tmpl, err := template.ParseFiles(TemplatesDirectory + "article.html")
+	tmpl, err := template.ParseFiles(helpers.TemplatesDirectory + "article.html")
 	if err != nil {
 		return fmt.Errorf("failed to parse article template %w", err)
 	}
@@ -151,35 +144,6 @@ func (t *templator) WriteHTMLArticles() error {
 			return err
 		}
 	}
-	return nil
-}
-
-// Formats the main file and the blog index with the data and saves it to the scaffold
-func (t *templator) formatBlogIndexSnippets() error {
-	tmpl, err := template.ParseFiles(TemplatesDirectory + "snippets/blog-list.html")
-	if err != nil {
-		return fmt.Errorf("failed to parse blog-list.html template: %w", err)
-	}
-
-	var buf bytes.Buffer
-
-	// Render the first 5 articles for main page:
-	err = tmpl.Execute(&buf, t.Blogs.GetNum(5, t.isDev))
-	if err != nil {
-		return fmt.Errorf("failed to execute template blog-list.html: %w", err)
-	}
-
-	t.scaffold.BlogListPreview = template.HTML(buf.String())
-
-	buf.Reset()
-
-	// Render all of the articles for the blog index:
-	err = tmpl.Execute(&buf, t.Blogs.GetNum(30, t.isDev))
-	if err != nil {
-		return fmt.Errorf("failed to execute template blog-list.html: %w", err)
-	}
-	t.scaffold.BlogList = template.HTML(buf.String())
-
 	return nil
 }
 

@@ -27,8 +27,9 @@ func TestGetSheetsPages(t *testing.T) {
 	if serviceCredentials == "" {
 		t.Error("skipping test; no google service credentials set")
 	}
+	blgs := blog.Blogs{}
 
-	svc, err := CreateSheetsService(sheetID, serviceCredentials)
+	svc, err := CreateSheetsService(sheetID, serviceCredentials, blgs)
 	if err != nil {
 		t.Fatalf("unable to create sheets service: %v", err)
 	}

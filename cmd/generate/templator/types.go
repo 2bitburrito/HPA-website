@@ -7,12 +7,6 @@ import (
 	"github.com/yuin/goldmark"
 )
 
-const (
-	TemplatesDirectory = "./templates/"
-	BlogPath           = "./static/blog-md/"
-	SnippetDirectory   = TemplatesDirectory + "snippets/"
-)
-
 type RenderData struct {
 	HTMLScaffold
 	blog.Blog

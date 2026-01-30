@@ -344,8 +344,22 @@ nav ul {
 .blog-list-description {
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+.leader-line {
+  flex-grow: 1;
+  border-bottom: 1px dashed var(--color-border);
+  margin: 0 var(--space-2);
+}
+
+.blog-list-views {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-right: var(--space-4);
+}
 
 /* Buttons */
 .btn {

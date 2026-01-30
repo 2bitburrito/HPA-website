@@ -1,0 +1,74 @@
+version: "2"
+run:
+  tests: false
+linters:
+  default: none
+  enable:
+    - cyclop
+    - errcheck
+    - errname
+    - funlen
+    - goconst
+    - govet
+    - ineffassign
+    - interfacebloat
+    - misspell
+    - noctx
+    - revive
+    - staticcheck
+    - unused
+  settings:
+    cyclop:
+      max-complexity: 15
+    errcheck:
+      check-type-assertions: true
+      check-blank: true
+    funlen:
+      lines: 60
+      statements: 40
+      ignore-comments: true
+    revive:
+      severity: error
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - cyclop
+          - goconst
+          - noctx
+          - unused
+        path: _test.go
+      - linters:
+          - cyclop
+          - errcheck
+          - goconst
+          - noctx
+          - unused
+        path: example_test.go
+    paths:
+      - vendor
+      - /usr/local/go/
+      - /opt/homebrew/Cellar/go/
+      - third_party$
+      - builtin$
+      - examples$
+issues:
+  fix: false
+formatters:
+  enable:
+    - gci
+    - gofumpt
+  exclusions:
+    generated: lax
+    paths:
+      - vendor
+      - /usr/local/go/
+      - /opt/homebrew/Cellar/go/
+      - third_party$
+      - builtin$
+      - examples$

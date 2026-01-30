@@ -22,7 +22,7 @@ run:
 # Test the application
 test:
 	@echo "Testing..."
-	@go test ./... -v -race
+	@go test ./... -v -race -short
 
 # Clean the binary
 clean:

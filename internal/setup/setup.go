@@ -40,13 +40,9 @@ func Setup() (Dependencies, error) {
 	if serviceCredentials == "" {
 		return Dependencies{}, fmt.Errorf("google sheets credentials not set")
 	}
-	sheetsSvc, err := sheetsclient.CreateSheetsService(spreadsheetID, serviceCredentials)
+	sheetsSvc, err := sheetsclient.CreateSheetsService(spreadsheetID, serviceCredentials, blogs)
 	if err != nil {
 		return Dependencies{}, fmt.Errorf("unable to create sheets service: %w", err)
-	}
-	err = sheetsSvc.GetAllData(blogs)
-	if err != nil {
-		return Dependencies{}, fmt.Errorf("unable to get all data from sheets: %w", err)
 	}
 
 	return Dependencies{
