@@ -5,9 +5,12 @@
     <li class="blog-list-entry">
       <a href="/blog/{{.FileName}}">
         <div class="blog-list-title">{{.Title}}</div>
-        <div class="blog-list-description">{{.Description}}</div>
+        <div class="blog-list-description">
+          <div>{{.Description}}</div>
+          <div class="leader-line"></div>
+          <div class="blog-list-views">{{.Views}} views</div>
+        </div>
       </a>
-      <div class="blog-list-views">{{`{{.Views}}`}}</div>
     </li>
     {{end}}
   </ol>
